@@ -13,19 +13,20 @@ angular.module( 'Pearson.home', [
   }
 
   
-   $http({
-      url: 'http://localhost:3001/secured/ping',
-      method: 'GET'
-    }).then(function() {
-      alert("We got the secured data successfully");
-    }, function(response) {
-      if (response.status == 0) {
-        alert("Please download the API seed so that you can call it.");
+   
+
+    $http({
+      url: 'http://localhost:3001/secured/searchFTArticles',
+      method: 'GET',
+      params: {
+      	search: "Economy"
       }
-      else {
-        alert(response.data);
-      }
-    });
+    }).then(function(response) {
+        console.log(response["data"]["articles"]);
+    }); // end of http get
+
+
+
   
 
 });
