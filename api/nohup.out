@@ -1,0 +1,12 @@
+Wed, 25 Nov 2015 16:57:51 GMT express deprecated app.configure: Check app.get('env') in an if statement at server.js:18:5
+Wed, 25 Nov 2015 16:57:51 GMT connect deprecated multipart: use parser (multiparty, busboy, formidable) npm module instead at node_modules/express/node_modules/connect/lib/middleware/bodyParser.js:56:20
+Wed, 25 Nov 2015 16:57:51 GMT connect deprecated limit: Restrict request size at location of read at node_modules/express/node_modules/connect/lib/middleware/multipart.js:86:15
+listening in http://localhost:3001
+successfully added a user 500
+OK
+successfully added a user 200
+OK
+successfully added a user 500
+OK
+OK
+OK
