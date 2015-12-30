@@ -12,7 +12,25 @@ angular.module( 'Pearson.home', [
     $location.path('/login');
   }
 
-  
+  //Remove duplicates from Pearson API
+  $scope.removeDuplicates = function(response){
+	  output = [];
+	  
+	  for (var i =0;i<response["data"]["articles"]["count"];i++){
+		  var foundDuplicate = false;
+		  for (var j = 0;j<output.length;j++){
+			  if (response["data"]["articles"]["results"][i]["article_url"] == output[j]["article_url"]) {
+				   foundDuplicate = true;
+			  }
+		  }
+		  
+		  if (foundDuplicate == false){
+			  output.push(response["data"]["articles"]["results"][i]);
+		  }
+	  }
+	  
+	  return output;
+  }
    
 	$scope.search = function(){
     $http({
@@ -22,10 +40,11 @@ angular.module( 'Pearson.home', [
       	search: "Economy"
       }
     }).then(function(response) {
-		window.legend = response["data"]["articles"]["results"][0];
+		results = $scope.removeDuplicates(response);
 		document.getElementById("results").innerHTML = (response["data"]["articles"]["count"] == 0) ? "No results yet" : "";
-		for (var i =0;i<response["data"]["articles"]["count"];i++){
-			new_link = '<a href = "' + response["data"]["articles"]["results"][i]["article_url"] + '">' + response["data"]["articles"]["results"][i]["headline"] + '</a>';
+
+		for (var i =0;i<results.length;i++){
+			new_link = '<a href = "' + results[i]["article_url"] + '">' + results[i]["headline"] + '</a>';
 			document.getElementById("results").innerHTML += new_link + "<br><br>";
 		}
         console.log(response["data"]["articles"]);
