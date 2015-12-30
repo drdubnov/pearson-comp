@@ -37,7 +37,7 @@ angular.module( 'Pearson.home', [
       url: 'http://localhost:3001/secured/searchFTArticles',
       method: 'GET',
       params: {
-      	search: "Economy"
+      	search: document.getElementById("textarea1").text
       }
     }).then(function(response) {
 		results = $scope.removeDuplicates(response);
