@@ -46,7 +46,7 @@ angular.module( 'Pearson.home', [
 		//Paragraph [0] xD
 
 		
-
+		document.getElementById("infoarea").innerHTML = "";
 
 		for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
 			document.getElementById("infoarea").innerHTML += response["data"]["result"]["text"][i];
