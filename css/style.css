@@ -1,4 +1,5 @@
 /* Custom CSS */
+
 body {
 	background-color: #0076C0;
 	overflow: hidden;
@@ -13,11 +14,8 @@ h1, h2, h3, h4, h5, h6 {
     -moz-box-shadow: 0 8px 6px -6px #ffdd00;
     box-shadow: 0 8px 6px -6px #ffdd00;
     background-color: #21358b;
+    color: #ffdd00;
     border: none;
-}
-
-.navbar h3 {
-	color: #ffdd00;
 }
 
 .navbar-container {
@@ -32,22 +30,12 @@ h1, h2, h3, h4, h5, h6 {
 	width: 70%;
 	height: 600px;
 	padding: 2% 50px;
-	font-size: 20px;
 }
 
-#typearea {
-	width: 65%;
+.content textarea {
+	width: 100%;
 	height: 450px;
 	resize: none;
-	margin-bottom: 20px;
-}
-
-#infoarea {
-	width: 30%;
-	height: 450px;
-	resize: none;
-	margin-left: 50px
-	background-color: red;
 	margin-bottom: 20px;
 }
 
@@ -58,23 +46,8 @@ h1, h2, h3, h4, h5, h6 {
 	width: 25%;
 	height: 1000px;
 	padding: 25px 20px;
-	overflow-y: scroll;
 }
 
 .wiki-result {
 	margin-top: 20px;
-}
-
-#search {
-	float: left;
-	margin: 20px 0;
-}
-
-.logout {
-	float: right;
-	margin: 20px 0;
-}
-
-#title {
-	margin: 20px 0;
 }

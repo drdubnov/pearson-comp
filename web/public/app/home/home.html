@@ -1,6 +1,14 @@
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="navbar-container">
-    <h3>Mint</h3>
+    <div class="col-md-4">
+      <input id="search" type="text" name="search" value="Search">
+    </div>
+    <div class="col-md-4">
+      <h3 id="title">Mint</h3>
+    </div>
+    <div class="col-md-4">
+      <button class="logout">Logout</button>
+    </div>
   </div>
 </nav>
 
@@ -8,8 +16,8 @@
   <h4>Enter Text Here:</h4>
   <textarea id="typearea"></textarea>
   <textarea id="infoarea" readonly></textarea>
-  <button>Copy Text to Clipboard</button>
-  <button ng-click="search()">Search Text</button>
+  <button class="mint-button">Copy Text to Clipboard</button>
+  <button class="mint-button" ng-click="search()">Search Text</button>
 </div>
 
 <div class="results">
