@@ -71,7 +71,8 @@ angular.module( 'Pearson.home', [
   }
   
   window.grabText = $scope.grabText;
-  
+
+
 $scope.search = function(){
 	$http({
 	  url: 'http://localhost:3001/secured/searchFTArticles',
@@ -84,12 +85,32 @@ $scope.search = function(){
 		document.getElementById("results").innerHTML = (response["data"]["articles"]["count"] == 0) ? "No results yet" : "";
 
 		for (var i =0;i<results.length;i++){
-			URL = results[i]["url"];
-			new_link = '<a onmouseover="grabText(\'' + URL + '\')">' + results[i]["headline"] + '</a>';
-			document.getElementById("results").innerHTML += new_link + "<br><br>";
+			
+			var new_link = document.createElement("a");
+			new_link.id = i;
+			new_link.onclick = function() {
+				var index = this.id;
+				$scope.grabText(results[index]["url"]);
+				$scope.getBib(results[index]);
+
+			}
+			new_link.innerHTML = results[i]["headline"];
+			document.getElementById("results").appendChild(new_link);
+			document.getElementById("results").appendChild(document.createElement("br"));
+
 		}
+
+
+
 	}); // end of http get
 }
+
+ $scope.getBib = function(obj) {
+	console.log(obj);
+}
+
+
+
 
   
 
