@@ -40,6 +40,7 @@ h1, h2, h3, h4, h5, h6 {
 	height: 450px;
 	resize: none;
 	margin-bottom: 20px;
+	overflow:hidden
 }
 
 #infoarea {

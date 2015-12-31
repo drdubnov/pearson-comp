@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="navbar-container">
     <div class="col-md-4">
-      <input id="search" type="text" name="search" placeholder="Search ">
+      <input id="search" type="text" name="search" placeholder="Press Enter to Search">
     </div>
     <div class="col-md-4">
       <h3 id="title">Mint</h3>
@@ -13,11 +13,18 @@
 </nav>
 
 <div class="content">
-  <h4>Enter Text Here:</h4>
+  <h4 style="float:left">Enter Text Here</h4>
+  <h4 align="right" style="float:right">Grade Level Prediction: ???</h4>
   <textarea id="typearea"></textarea>
+	
   <textarea id="infoarea" readonly></textarea>
-  <button class="mint-button">Copy Text to Clipboard</button>
+
+  <button class="mint-button" id="copyButton">Copy Text to Clipboard</button>
   <button class="mint-button" ng-click="search()">Search Text</button>
+  
+  <input class="upButton" type="image" src="images/UpArrow.bmp" alt="Submit" width="48" height="48" onmousedown="textScrollDown()">
+  <input class="downButton" type="image" src="images/DownArrow.bmp" alt="Submit" width="48" height="48" onmousedown="textScrollUp()">
+  
 </div>
 
 <div class="results">
