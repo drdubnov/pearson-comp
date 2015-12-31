@@ -47,7 +47,7 @@ app.get('/secured/searchFTArticles', function(req, res) {
       'Content-Type': 'application/json'
       },
       method: 'GET', //Specify the method
-      qs: {search: req.query["search"]}
+      qs: {search: req.query["search"], limit:1000}
   }, function(error, response, body){
    
 
@@ -59,6 +59,25 @@ app.get('/secured/searchFTArticles', function(req, res) {
           console.log(data);
           res.send(200, {articles:data});
         }
+      }
+  });
+});
+
+//Pull Pearson Article!
+app.get('/secured/checkArticleFree', function(req, res) {
+  request({
+      url: "http://api.pearson.com" + req.query["url_to_check"], //Article URL to verify
+      headers: {
+		'Content-Type': 'application/json'
+      },
+      method: 'GET', //Specify the method
+      qs: {}
+  }, function(error, response, body){
+	   if(error) {
+          console.log(error);
+      } else {
+          var data = JSON.parse(response.body);
+		  res.send(200, data);
       }
   });
 });

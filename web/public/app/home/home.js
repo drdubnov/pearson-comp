@@ -25,31 +25,57 @@ angular.module( 'Pearson.home', [
 		  }
 		  
 		  if (foundDuplicate == false){
-			  output.push(response["data"]["articles"]["results"][i]);
+			window.article = response["data"];
+			output.push(response["data"]["articles"]["results"][i]);
 		  }
 	  }
 	  
 	  return output;
   }
    
-	$scope.search = function(){
-    $http({
-      url: 'http://localhost:3001/secured/searchFTArticles',
-      method: 'GET',
-      params: {
-      	search: document.getElementById("textarea1").value
-      }
-    }).then(function(response) {
+  //Run article through Pearson API to retrieve data
+  $scope.pullArticleContents = function(pearson_article_url){
+	var result = "EMPTY";
+	$http({
+	  url: 'http://localhost:3001/secured/checkArticleFree',
+	  method: 'GET',
+	  params: {
+		url_to_check: pearson_article_url
+	  }
+	}).then(function(response) {
+		//Paragraph [0] xD
+		alert(response["data"]["result"]["text"][0]);
+		window.objectX = response;
+		//window.objectX["data"]["result"]["text"][1]
+		return response;
+	}); // end of http get
+  }
+  
+  //Grab Article Text
+  $scope.grabText = function(pearson_article_url){
+	  $scope.pullArticleContents(pearson_article_url);
+  }
+  
+  window.grabText = $scope.grabText;
+  
+$scope.search = function(){
+	$http({
+	  url: 'http://localhost:3001/secured/searchFTArticles',
+	  method: 'GET',
+	  params: {
+		search: document.getElementById("textarea1").value
+	  }
+	}).then(function(response) {
 		results = $scope.removeDuplicates(response);
 		document.getElementById("results").innerHTML = (response["data"]["articles"]["count"] == 0) ? "No results yet" : "";
 
 		for (var i =0;i<results.length;i++){
-			new_link = '<a href = "' + results[i]["article_url"] + '">' + results[i]["headline"] + '</a>';
+			URL = results[i]["url"];
+			new_link = '<a onclick="grabText(\'' + URL + '\')">' + results[i]["headline"] + '</a>';
 			document.getElementById("results").innerHTML += new_link + "<br><br>";
 		}
-        console.log(response["data"]["articles"]);
-    }); // end of http get
-	}
+	}); // end of http get
+}
 
   
 
