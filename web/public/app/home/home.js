@@ -44,7 +44,7 @@ angular.module( 'Pearson.home', [
 	  }
 	}).then(function(response) {
 		//Paragraph [0] xD
-		alert(response["data"]["result"]["text"][0]);
+		document.getElementById("infoarea").innerHTML = response["data"]["result"]["text"][0];
 		window.objectX = response;
 		//window.objectX["data"]["result"]["text"][1]
 		return response;
@@ -63,7 +63,7 @@ $scope.search = function(){
 	  url: 'http://localhost:3001/secured/searchFTArticles',
 	  method: 'GET',
 	  params: {
-		search: document.getElementById("textarea1").value
+		search: document.getElementById("typearea").value
 	  }
 	}).then(function(response) {
 		results = $scope.removeDuplicates(response);
@@ -71,7 +71,7 @@ $scope.search = function(){
 
 		for (var i =0;i<results.length;i++){
 			URL = results[i]["url"];
-			new_link = '<a onclick="grabText(\'' + URL + '\')">' + results[i]["headline"] + '</a>';
+			new_link = '<a onmouseover="grabText(\'' + URL + '\')">' + results[i]["headline"] + '</a>';
 			document.getElementById("results").innerHTML += new_link + "<br><br>";
 		}
 	}); // end of http get
