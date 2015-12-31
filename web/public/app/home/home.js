@@ -77,7 +77,7 @@ $scope.search = function(){
 	  url: 'http://localhost:3001/secured/searchFTArticles',
 	  method: 'GET',
 	  params: {
-		search: document.getElementById("typearea").value
+		search: document.getElementById("search").value
 	  }
 	}).then(function(response) {
 		results = $scope.removeDuplicates(response);
