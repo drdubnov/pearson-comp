@@ -79,13 +79,13 @@ $('#search').on("keypress", function(e) {
         }
 });
 
-textScrollUp = function(){
-	document.getElementById("infoarea").scrollTop +=300
-}
+// textScrollUp = function(){
+// 	document.getElementById("infoarea").scrollTop +=300
+// }
 
-textScrollDown = function(){
-	document.getElementById("infoarea").scrollTop -=300
-}
+// textScrollDown = function(){
+// 	document.getElementById("infoarea").scrollTop -=300
+// }
 
 var copyTextareaBtn = document.querySelector('#copyButton');
 
