@@ -106,7 +106,7 @@ app.get('/secured/commonPhrases', function(req, res) {
 	var NGrams = natural.NGrams;
 	var counts = new Object();
 	
-	//Compute N-Grams from unit size 1 to unit size 4.
+	//Compute N-Grams from unit size 3 to unit size 6.
 	for (var ngram_length = 3;ngram_length < 6;ngram_length +=1){
 		var blocks = NGrams.ngrams(essayText, ngram_length);
 		

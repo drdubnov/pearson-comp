@@ -197,6 +197,7 @@ function processEssay() {
 	subjectProbabilities['newspaper'] = 0;
 	subjectProbabilities['academic'] = 0;
 	
+	
 	count = 0;
 	for (var key in rankOfWords) {
 		if (rankOfWords.hasOwnProperty(key)){
@@ -238,9 +239,30 @@ function processEssay() {
 		}
 	}
 	
-	alert("Predicted Subject is " + bestSubject + "\r\n Average Rank: " + averageFreq + " \r\n");
+	//Computes average sentence length
+	sentences = document.getElementById("typearea").value.replace(".","!");
+	sentences = sentences.replace(/[.,-\/#$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ");
+	sentences = sentences.trim().split("!");
 	
-	return [bestSubject,averageFreq];
+	avgSentenceLength = 0;
+	count = 0;
+	for (var i =0;i < sentences.length; i ++){
+		//Grab sentence
+		sentence = sentences[i];
+		
+		//Compute length of sentence
+		if (sentence != ""){
+			ln = sentence.trim().split(" ").length;
+			avgSentenceLength += ln;
+			count +=1;
+		}
+	}
+	
+	avgSentenceLength = (avgSentenceLength / count);
+	
+	alert("Predicted Subject is " + bestSubject + "\r\n Average Rank: " + averageFreq + " \r\n" + "Average Sentence Length: " + avgSentenceLength + "\r\n");
+	
+	return [bestSubject,averageFreq,avgSentenceLength];
 	
 }
 
