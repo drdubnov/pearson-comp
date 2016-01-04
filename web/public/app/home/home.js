@@ -152,7 +152,7 @@ function processEssay() {
 	words = essayText.split(" ");
 	
 	//Compute the rank of each word
-	rankOfWords = [];
+	rankOfWords = new Object();
 	
 	for (var i =0;i<words.length;i++){
 		current = words[i].trim().toLowerCase();
@@ -164,43 +164,55 @@ function processEssay() {
 			
 			//This is where the thought comes in.. 
 			//Let's start with computing the average rank.
+			window.swag = current
 			rankOfWords[current] = grabWordInfo
 		}
 	}
 	
 	//Compute the average rank
-	averageRank = 0;
+	averageFreq = 0;
 	
 	//Compute the probabilities for each subject (using Naive Bayes Assumption)
 	//More specifically, the Multi-variate Bernoulli event model.
 	subjectProbabilities = [];
-	subjectProbabilities['spoken'] = 1;
-	subjectProbabilities['fiction'] = 1;
-	subjectProbabilities['magazine'] = 1;
-	subjectProbabilities['newspaper'] = 1;
-	subjectProbabilities['academic'] = 1;
+	subjectProbabilities['spoken'] = 0;
+	subjectProbabilities['fiction'] = 0;
+	subjectProbabilities['magazine'] = 0;
+	subjectProbabilities['newspaper'] = 0;
+	subjectProbabilities['academic'] = 0;
 	
 	count = 0;
 	for (var key in rankOfWords) {
 		if (rankOfWords.hasOwnProperty(key)){
-			averageRank +=parseInt(rankOfWords[key][0])
+			averageFreq +=parseInt(rankOfWords[key][3])
+			
 			totalFreq = parseFloat(rankOfWords[key][3]);
 			
-			subjectProbabilities['spoken'] *= parseFloat(rankOfWords[key][4])/totalFreq;
+			//Compute the likelihood
+			/*subjectProbabilities['spoken'] *= parseFloat(rankOfWords[key][4])/totalFreq;
 			subjectProbabilities['fiction'] *= parseFloat(rankOfWords[key][5])/totalFreq;
 			subjectProbabilities['magazine'] *= parseFloat(rankOfWords[key][6])/totalFreq;
 			subjectProbabilities['newspaper'] *= parseFloat(rankOfWords[key][7])/totalFreq;
-			subjectProbabilities['academic'] *= parseFloat(rankOfWords[key][8])/totalFreq;
+			subjectProbabilities['academic'] *= parseFloat(rankOfWords[key][8])/totalFreq;*/
+			
+			
+			//Compute the log likelihood instead (better precision)!
+			subjectProbabilities['spoken'] += Math.log10(parseFloat(rankOfWords[key][4])/totalFreq);
+			subjectProbabilities['fiction'] += Math.log10(parseFloat(rankOfWords[key][5])/totalFreq);
+			subjectProbabilities['magazine'] += Math.log10(parseFloat(rankOfWords[key][6])/totalFreq);
+			subjectProbabilities['newspaper'] += Math.log10(parseFloat(rankOfWords[key][7])/totalFreq);
+			subjectProbabilities['academic'] += Math.log10(parseFloat(rankOfWords[key][8])/totalFreq);
 			count +=1;
 		}
 	}
 	
-	//Computes the Average Rank
-	averageRank = averageRank/(count);
+	window.subjectProbabilities = subjectProbabilities;
+	//Computes the Average Frequency
+	averageFreq = parseInt(averageFreq/(count));
 	
 	//Computes whether this article is likely to be "SPOKEN","FICTION","MAGAZINE","NEWSPAPER","ACADEMIC"
 	bestSubject = '';
-	bestResult = 0;
+	bestResult = -Infinity;
 	for (var subj in subjectProbabilities){
 		if (subjectProbabilities.hasOwnProperty(subj)){
 			if (subjectProbabilities[subj] > bestResult){
@@ -210,9 +222,9 @@ function processEssay() {
 		}
 	}
 	
-	//The higher the average rank, the better. Exp) 'The' has rank #1 - used the most.
-	alert("Best Subject is " + bestSubject + "\r\n Average Rank: " + averageRank + " \r\n");
-	return [bestSubject,averageRank];
+	alert("Predicted Subject is " + bestSubject + "\r\n Average Rank: " + averageFreq + " \r\n");
+	
+	return [bestSubject,averageFreq];
 	
 }
 
