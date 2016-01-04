@@ -12,7 +12,7 @@ angular.module( 'Pearson.home', [
 		word_to_check: "tough"
 	  }
 	}).then(function(response) {
-		console.log(response);
+		console.log(response["data"]);
 
 	}); // end of http get
 

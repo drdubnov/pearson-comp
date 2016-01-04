@@ -85,7 +85,7 @@ app.get('/secured/checkArticleFree', function(req, res) {
 app.get('/secured/checkDefinition', function(req, res) {
   console.log(req.query["word_to_check"]);
   request({
-      url: "https://api.pearson.com/v2/dictionaries/entries?headword" + req.query["word_to_check"], //Article URL to verify
+      url: "http://api.pearson.com/v2/dictionaries/entries?headword=" + req.query["word_to_check"], //Article URL to verify
       headers: {
         'Content-Type': 'application/json'
       },
