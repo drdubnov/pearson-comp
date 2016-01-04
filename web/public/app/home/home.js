@@ -59,29 +59,33 @@ angular.module( 'Pearson.home', [
 		url_to_check: pearson_article_url
 	  }
 	}).then(function(response) {
-		//Paragraph [0] xD
+
 		var info = document.getElementById("infoarea");
 		var container = document.createElement("div");
 
-		// document.getElementById("infoarea").innerHTML = "";
-		// console.log(response["data"]["result"]["text"][0].length);
-		console.log(response["data"]["result"]["text"][0].split());
-
 		for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
 
+			var strArray = response["data"]["result"]["text"][i].split(" ");
 
-			var word =  document.createElement("span");
+			for (var j = 0; j < strArray.length; j++) {
+				var word =  document.createElement("span");
+
+				word.innerHTML = strArray[j];
 
 
-			word.innerHTML = response["data"]["result"]["text"][i];
-			word.onclick = function() {
-	
-				var results = $scope.findMeaning(word.innerHTML);
 
+				word.onclick = function() {
+					var results = $scope.findMeaning(this.innerHTML);
+
+
+				}
+				container.appendChild(word);
 
 			}
 
-			container.appendChild(word);
+			
+
+
 
 
 
