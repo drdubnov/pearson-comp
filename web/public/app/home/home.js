@@ -245,6 +245,7 @@ function processEssay() {
 	sentences = sentences.trim().split("!");
 	
 	avgSentenceLength = 0;
+	avgSentenceVariance = 0;
 	count = 0;
 	for (var i =0;i < sentences.length; i ++){
 		//Grab sentence
@@ -260,9 +261,26 @@ function processEssay() {
 	
 	avgSentenceLength = (avgSentenceLength / count);
 	
-	alert("Predicted Subject is " + bestSubject + "\r\n Average Rank: " + averageFreq + " \r\n" + "Average Sentence Length: " + avgSentenceLength + "\r\n");
+	//Computes Sample Variance
+	for (var i =0;i < sentences.length; i ++){
+		//Grab sentence
+		sentence = sentences[i];
+		
+		//Compute length of sentence
+		if (sentence != ""){
+			ln = sentence.trim().split(" ").length;
+			avgSentenceVariance += (ln - avgSentenceLength)*(ln - avgSentenceLength);
+		}
+	}
 	
-	return [bestSubject,averageFreq,avgSentenceLength];
+	//Computes using Unbiased Estimate Formula
+	avgSentenceVariance = avgSentenceVariance * 1/(count-1);
+	
+	alert("Predicted Subject is " + bestSubject + "\r\n Average Rank: " + averageFreq + " \r\n" + "Average Sentence Length: " + avgSentenceLength + "\r\n"
+	+ "Variance of Sentence Length: " + avgSentenceVariance
+	);
+	
+	return [bestSubject,averageFreq,avgSentenceLength,avgSentenceVariance];
 	
 }
 
