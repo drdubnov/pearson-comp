@@ -102,6 +102,122 @@ copyTextareaBtn.addEventListener('click', function(event) {
   }
 });
 
+//Generate word frequency list at the start of the application
+$(document).ready(function() {
+    $.ajax({
+        type: "GET",
+        url: "/app/home/wordFrequencyList.csv",
+        dataType: "text",
+        success: function(data) {processData(data);}
+     });
+});
+
+//Process the CSV file and store in Javascript data structure
+function processData(allText) {
+    var allTextLines = allText.split(/\r\n|\n/);
+    var headers = allTextLines[0].split(',');
+    var lines = new Object();
+	
+    for (var i=1; i<allTextLines.length; i++) {
+        var data = allTextLines[i].split(',');
+        if (data.length == headers.length) {
+
+            var tarr = [];
+            for (var j=0; j<headers.length; j++) {
+				//headers[j]
+				input = (data[j]).slice(0, -1).slice(1).trim().toLowerCase();
+                tarr.push(input);
+            }
+			
+			word = (data[2]).slice(0, -1).slice(1).trim().toLowerCase();
+			
+			window.swag = word;
+			lines[word] = tarr;
+        }
+    }
+
+	//Store it as a global variable in the window object
+    window.wordFreqList = lines;
+}
+
+//Function to process the contents of the essay and compute statistics on it
+function processEssay() {
+	essayText = document.getElementById("typearea").value;
+	
+	//Remove all punctuation from essay
+	//Verify this for errors just in case
+	essayText = essayText.replace(/[.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ");
+	
+	//Split to get the words
+	words = essayText.split(" ");
+	
+	//Compute the rank of each word
+	rankOfWords = [];
+	
+	for (var i =0;i<words.length;i++){
+		current = words[i].trim().toLowerCase();
+		
+		//Check if the word is in our list
+		if (current in window.wordFreqList){
+			//Grab Info from Freq List
+			grabWordInfo = window.wordFreqList[current];
+			
+			//This is where the thought comes in.. 
+			//Let's start with computing the average rank.
+			rankOfWords[current] = grabWordInfo
+		}
+	}
+	
+	//Compute the average rank
+	averageRank = 0;
+	
+	//Compute the probabilities for each subject (using Naive Bayes Assumption)
+	//More specifically, the Multi-variate Bernoulli event model.
+	subjectProbabilities = [];
+	subjectProbabilities['spoken'] = 1;
+	subjectProbabilities['fiction'] = 1;
+	subjectProbabilities['magazine'] = 1;
+	subjectProbabilities['newspaper'] = 1;
+	subjectProbabilities['academic'] = 1;
+	
+	count = 0;
+	for (var key in rankOfWords) {
+		if (rankOfWords.hasOwnProperty(key)){
+			averageRank +=parseInt(rankOfWords[key][0])
+			totalFreq = parseFloat(rankOfWords[key][3]);
+			
+			subjectProbabilities['spoken'] *= parseFloat(rankOfWords[key][4])/totalFreq;
+			subjectProbabilities['fiction'] *= parseFloat(rankOfWords[key][5])/totalFreq;
+			subjectProbabilities['magazine'] *= parseFloat(rankOfWords[key][6])/totalFreq;
+			subjectProbabilities['newspaper'] *= parseFloat(rankOfWords[key][7])/totalFreq;
+			subjectProbabilities['academic'] *= parseFloat(rankOfWords[key][8])/totalFreq;
+			count +=1;
+		}
+	}
+	
+	//Computes the Average Rank
+	averageRank = averageRank/(count);
+	
+	//Computes whether this article is likely to be "SPOKEN","FICTION","MAGAZINE","NEWSPAPER","ACADEMIC"
+	bestSubject = '';
+	bestResult = 0;
+	for (var subj in subjectProbabilities){
+		if (subjectProbabilities.hasOwnProperty(subj)){
+			if (subjectProbabilities[subj] > bestResult){
+				bestSubject = subj;
+				bestResult = subjectProbabilities[subj];
+			}
+		}
+	}
+	
+	//The higher the average rank, the better. Exp) 'The' has rank #1 - used the most.
+	alert("Best Subject is " + bestSubject + "\r\n Average Rank: " + averageRank + " \r\n");
+	return [bestSubject,averageRank];
+	
+}
+
+window.processEssay = processEssay;
+
 $scope.search = function(){
 	$http({
 	  url: 'http://localhost:3001/secured/searchFTArticles',
