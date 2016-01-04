@@ -16,7 +16,7 @@ h1, h2, h3, h4, h5, h6 {
     border: none;
 }
 
-.navbar h3 {
+.navbar h1 {
 	color: #ffdd00;
 }
 
@@ -26,11 +26,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .content {
+	position: absolute;
 	background-color: white;
 	margin: 100px 25px;
 	float: left;
 	width: 70%;
-	height: 600px;
+	height: 625px;
 	padding: 2% 50px;
 	font-size: 20px;
 }
@@ -40,16 +41,17 @@ h1, h2, h3, h4, h5, h6 {
 	height: 450px;
 	resize: none;
 	margin-bottom: 20px;
-	overflow:hidden
+	overflow-y: scroll;
 }
 
 #infoarea {
-	width: 30%;
+	width: 34%;
 	height: 450px;
 	resize: none;
 	margin-left: 50px
 	background-color: red;
 	margin-bottom: 20px;
+	overflow-y: scroll;
 }
 
 .results {
@@ -68,14 +70,36 @@ h1, h2, h3, h4, h5, h6 {
 
 #search {
 	float: left;
-	margin: 20px 0;
+    margin: 20px 10px;
+    height: 42px;
+    width: 175px;
 }
 
 .logout {
 	float: right;
-	margin: 20px 0;
+	margin: 20px 10px;
+	background-color: #0076C0;
+	color: #ffdd00;
+	width: 150px;
+	transition: all 0.2s;
+}
+
+.logout:hover {
+	background-color: #ffdd00;
+	color: #0076C0;
 }
 
 #title {
 	margin: 20px 0;
+}
+
+.mint-button {
+	background-color: #0076C0;
+	color: #ffdd00;
+	transition: all 0.2s;
+}
+
+.mint-button:hover {
+	background-color: #ffdd00;
+	color: #0076C0;
 }
