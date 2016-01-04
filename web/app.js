@@ -9,15 +9,6 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 
-//natural language processing
-var natural = require('natural');
-var tokenizer = new natural.WordTokenizer();
-console.log(tokenizer.tokenize("your dog has fleas."));
-
-var NGrams = natural.NGrams;
-console.log(NGrams.ngrams('some other words here for you', 4));
-
-
 var app = express();
 
 // view engine setup

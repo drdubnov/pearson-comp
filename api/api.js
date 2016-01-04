@@ -15,6 +15,14 @@ var authenticate = jwt({
 });
 
 
+//natural language processing
+var natural = require('natural');
+var tokenizer = new natural.WordTokenizer();
+console.log(tokenizer.tokenize("your dog has fleas."));
+
+var NGrams = natural.NGrams;
+console.log(NGrams.ngrams('some other words here for you', 4));
+
 app.configure(function () {
 
  // Request body parsing middleware should be above methodOverride
