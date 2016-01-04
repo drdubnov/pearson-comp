@@ -64,15 +64,20 @@ angular.module( 'Pearson.home', [
 		var container = document.createElement("div");
 
 		// document.getElementById("infoarea").innerHTML = "";
+		// console.log(response["data"]["result"]["text"][0].length);
+		console.log(response["data"]["result"]["text"][0].split());
 
 		for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
-			alert(response["data"]["result"]["text"][i]);
+
+
 			var word =  document.createElement("span");
+
+
 			word.innerHTML = response["data"]["result"]["text"][i];
 			word.onclick = function() {
-				console.log(this.innerHTML);
+	
 				var results = $scope.findMeaning(word.innerHTML);
-				alert(results.length);	
+
 
 			}
 
