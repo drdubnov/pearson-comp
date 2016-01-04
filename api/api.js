@@ -82,6 +82,25 @@ app.get('/secured/checkArticleFree', function(req, res) {
   });
 });
 
+app.get('/secured/checkDefinition', function(req, res) {
+  console.log(req.query["word_to_check"]);
+  request({
+      url: "https://api.pearson.com/v2/dictionaries/entries?headword" + req.query["word_to_check"], //Article URL to verify
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'GET', //Specify the method
+      qs: {}
+  }, function(error, response, body){
+     if(error) {
+          console.log(error);
+      } else {
+        var data = JSON.parse(response.body);
+        res.send(200, data);
+      }
+  });
+});
+
 
 
 //natural language processing

@@ -5,6 +5,17 @@ angular.module( 'Pearson.home', [
 
   $scope.auth = auth;
 
+  $http({
+	  url: 'http://localhost:3001/secured/checkDefinition',
+	  method: 'GET',
+	  params: {
+		word_to_check: "tough"
+	  }
+	}).then(function(response) {
+		console.log(response);
+
+	}); // end of http get
+
   $scope.logout = function() {
     auth.signout();
     store.remove('profile');
