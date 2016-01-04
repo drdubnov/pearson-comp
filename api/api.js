@@ -15,14 +15,6 @@ var authenticate = jwt({
 });
 
 
-//natural language processing
-var natural = require('natural');
-var tokenizer = new natural.WordTokenizer();
-console.log(tokenizer.tokenize("your dog has fleas."));
-
-var NGrams = natural.NGrams;
-console.log(NGrams.ngrams('some other words here for you', 4));
-
 app.configure(function () {
 
  // Request body parsing middleware should be above methodOverride
@@ -91,6 +83,74 @@ app.get('/secured/checkArticleFree', function(req, res) {
 });
 
 
+
+//natural language processing
+var natural = require('natural');
+var tokenizer = new natural.WordTokenizer();
+
+
+//Run Sentiment Analysis
+app.get('/secured/sentimentAnalysis', function(req, res) {
+	essayText = req.query["essay"];
+	
+	var NGrams = natural.NGrams;
+	var answer = NGrams.ngrams('some other words here for you', 4);
+	res.send(200, {sentiment:answer});   
+});
+
+
+//Most common phrases
+app.get('/secured/commonPhrases', function(req, res) {
+	essayText = req.query["essay"];
+	
+	var NGrams = natural.NGrams;
+	var counts = new Object();
+	
+	//Compute N-Grams from unit size 1 to unit size 4.
+	for (var ngram_length = 3;ngram_length < 6;ngram_length +=1){
+		var blocks = NGrams.ngrams(essayText, ngram_length);
+		
+		for (var i = 0;i<blocks.length;i++){
+			word = blocks[i];
+			word = word.join(" ").trim().toLowerCase();
+			
+			if ((word in counts) == false){
+				counts[word] = 1;
+			}
+			else{
+				counts[word] +=1;
+			}
+		}
+	}
+	
+	//Find top 5 N-Grams
+	var mostCommon = [];
+	for (var i =0;i<5;i++){
+		//Get largest
+		var bestWord = '';
+		var bestFreq = 0;
+		
+		for (var j = 0;j < Object.keys(counts).length;j++){
+			word = Object.keys(counts)[j];
+			totalC = counts[word];
+			console.log(totalC);
+			
+			if (counts[word] >= bestFreq){
+				bestWord = word;
+				bestFreq = counts[word];
+			}
+		}
+		
+		//Push to our most common list
+		mostCommon.push("Phrase: " + bestWord + " - Number of Occurances: " + bestFreq);
+		
+		//Remove from future choices (so it doesn't get chosen again)
+		counts[bestWord] = 0;
+	}
+		  
+	//Send the top 5 most common words!
+	res.send(200, {top5:mostCommon});   
+});
 
 
 

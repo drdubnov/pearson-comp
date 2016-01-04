@@ -140,6 +140,22 @@ function processData(allText) {
     window.wordFreqList = lines;
 }
 
+//Function to return the top 5 most common N-Grams
+function topFiveNGrams(){
+	$http({
+	  url: 'http://localhost:3001/secured/commonPhrases',
+	  method: 'GET',
+	  params: {
+		essay: document.getElementById("typearea").value
+	  }
+	}).then(function(response) {
+		alert(response["data"]["top5"].join("\r\n"));
+		return (response);
+	});
+	
+}
+window.topFiveNGrams = topFiveNGrams;
+
 //Function to process the contents of the essay and compute statistics on it
 function processEssay() {
 	essayText = document.getElementById("typearea").value;
