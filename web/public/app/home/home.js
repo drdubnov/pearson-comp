@@ -5,16 +5,21 @@ angular.module( 'Pearson.home', [
 
   $scope.auth = auth;
 
-  $http({
+  $scope.findMeaning = function(word) {
+  	  $http({
 	  url: 'http://localhost:3001/secured/checkDefinition',
 	  method: 'GET',
 	  params: {
-		word_to_check: "tough"
+		word_to_check: word
 	  }
 	}).then(function(response) {
 		console.log(response["data"]);
 
 	}); // end of http get
+
+  }
+
+
 
   $scope.logout = function() {
     auth.signout();
@@ -55,19 +60,31 @@ angular.module( 'Pearson.home', [
 	  }
 	}).then(function(response) {
 		//Paragraph [0] xD
+		var info = document.getElementById("infoarea");
+		var container = document.createElement("div");
 
-		
-		document.getElementById("infoarea").innerHTML = "";
+		// document.getElementById("infoarea").innerHTML = "";
 
 		for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
-			document.getElementById("infoarea").innerHTML += response["data"]["result"]["text"][i];
+			alert(response["data"]["result"]["text"][i]);
+			var word =  document.createElement("span");
+			word.innerHTML = response["data"]["result"]["text"][i];
+			word.onclick = function() {
+				console.log(this.innerHTML);
+				var results = $scope.findMeaning(word.innerHTML);
+				alert(results.length);	
+
+			}
+
+			container.appendChild(word);
+
+
+
+			// document.getElementById("infoarea").innerHTML += response["data"]["result"]["text"][i];
 		}
 
+		info.appendChild(container);
 
-
-
-
-	
 
 
 		window.objectX = response;

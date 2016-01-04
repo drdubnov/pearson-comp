@@ -42,16 +42,18 @@ h1, h2, h3, h4, h5, h6 {
 	resize: none;
 	margin-bottom: 20px;
 	overflow-y: scroll;
+	display: inline-block;
 }
 
 #infoarea {
-	width: 34%;
+	width: 35%;
 	height: 450px;
 	resize: none;
 	margin-left: 50px
-	background-color: red;
+
 	margin-bottom: 20px;
 	overflow-y: scroll;
+	border: 1px solid black;
 }
 
 .results {
