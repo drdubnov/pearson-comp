@@ -103,10 +103,7 @@ angular.module( 'Pearson.home', [
 					
 				}
 
-				// word.onmouseover = function() {
-
-				// 	this.style.color = "red";
-				// }
+			
 
 				$(word).hover(
 				
@@ -423,12 +420,13 @@ $scope.search = function(){
 			new_link.onclick = function() {
 				var index = this.id;
 				$scope.grabText(results[index]["url"]);
-				$scope.getBib(results[index]);
+
 
 			}
 			new_link.innerHTML = results[i]["headline"];
 			document.getElementById("results").appendChild(new_link);
 			document.getElementById("results").appendChild(document.createElement("br"));
+				document.getElementById("results").appendChild(document.createElement("br"));
 
 		}
 
@@ -437,9 +435,7 @@ $scope.search = function(){
 	}); // end of http get
 }
 
- $scope.getBib = function(obj) {
-	console.log(obj);
-}
+
 
 
 
