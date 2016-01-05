@@ -80,6 +80,7 @@ angular.module( 'Pearson.home', [
 		url_to_check: pearson_article_url
 	  }
 	}).then(function(response) {
+		document.getElementById("infoarea").innerHTML = "";
 
 		var info = document.getElementById("infoarea");
 		var container = document.createElement("div");
