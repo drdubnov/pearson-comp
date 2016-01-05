@@ -233,7 +233,7 @@ function topFiveNGrams(){
 		Info1 = "<strong>Basic Text Information</strong> <br>" + 
 		"Predicted topic - " + bestSubject + "<br>" +
 		"Word Uniqueness Score - " + averageFreq + "<br>" +
-		"Average Sentence Length - " + avgSentenceLength + "<br>" +
+		"Average Sentence Length - " +  Math.round(avgSentenceLength) + "<br>" +
 		"Sentence Length Standard Dev. - " + Math.round(Math.sqrt(avgSentenceVariance)) + "<br><br>";
 		
 		document.getElementById("resultsParagraph").innerHTML = Info1 + "<strong>Common Phrases and Frequency</strong> <br> " + response["data"]["top5"].join("<br>");
