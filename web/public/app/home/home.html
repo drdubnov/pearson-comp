@@ -1,46 +1,47 @@
+
+
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="navbar-container">
-    <div class="col-md-4">
+    <div class="col-sm-12 col-md-4">
       <input id="search" type="text" name="search" placeholder="Press Enter to Search">
     </div>
-    <div class="col-md-4">
+    <div class="col-sm-12 col-md-4">
       <h1 id="title">Mint</h1>
     </div>
-    <div class="col-md-4">
-      <button class="logout" ng-click = "logout()"><h5>Logout</h5></button>
+    <div class="col-sm-12 col-md-4">
+      <button class="logout" ng-click = "logout()"><h5>Logout {{nickname}}</h5></button>
     </div>
   </div>
 </nav>
 
-<div class="content">
-  <h4 style="float:left">Enter Text Here</h4>
-  <h4 align="right" style="float:right">Grade Level Prediction: (Enter Content) </h4>
-  
-<div>
-  <textarea id="typearea" placeholder="Enter Your Essay Content Here" ></textarea>
-	
-  <div id="infoarea"></div>
-</div>
+<div class = "row">
+  <div class="content">
+    <div class = "row">
+      <h4 style="float:left">Enter Essay Here</h4>
+    </div>  
+    
+    <div>
+      <textarea id="typearea" placeholder="Enter Your Essay Content Here" ></textarea>
+      <div id="infoarea"></div>
+    </div>
 
-  <button class="mint-button" id="copyButton"><h4>Copy Text to Clipboard</h4></button>
-  <button class="mint-button" onclick="showResults()"><h4>Analyze</h4></button>
-  <div>
-  <button class="mint-button" onclick="toggleStatus()" id="toggleButton" style="visibility:hidden;float:right;margin-top:-40px;margin-left:5px"><h4>Toggle <br> Definition</h4></button>
-  <label style="float:left" id="statusbar">Status:</label>
+    <button class="mint-button" id="copyButton"><h4>Copy Text to Clipboard</h4></button>
+    <button class="mint-button" onclick="showResults()"><h4>Analyze</h4></button>
+    <div>
+      <button class="mint-button" onclick="toggleStatus()" id="toggleButton" style="visibility:hidden;float:right;margin-top:-40px;margin-left:5px"><h4>Toggle <br> Definition</h4></button>
+      <label style="float:left" id="statusbar">Status:</label>
+    </div>
   </div>
-  <!--<button class="mint-button" ng-click="search()">Search Text</button>-->
-  
- <!--  <input class="upButton" type="image" src="images/UpArrow.bmp" alt="Submit" width="48" height="48" onmousedown="textScrollDown()">
-  <input class="downButton" type="image" src="images/DownArrow.bmp" alt="Submit" width="48" height="48" onmousedown="textScrollUp()"> -->
-  
-</div>
-
-<div class="results">
-  <h4>Results Section:</h4>
-  <div class="wiki-result">
-      <h5 id="results" align="center" style="margin-top:0%">No result yet</h5>
+  <div class="results">
+    <h4>Results Section:</h4>
+    <div class="wiki-result">
+        <h5 id="results" align="center" style="margin-top:0%">No result yet</h5>
+    </div>
   </div>
 </div>
+
+
+
 
 <!-- Modal -->
 <div id="myModal" class="modal fade" role="dialog">

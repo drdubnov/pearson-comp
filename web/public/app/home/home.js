@@ -4,6 +4,8 @@ angular.module( 'Pearson.home', [
 .controller( 'HomeCtrl', function HomeController( $scope, auth, $http, $location, store ) {
 
   $scope.auth = auth;
+  $scope.nickname = auth["profile"]["name"];
+  console.log( $scope.nickname);
 
   $scope.findMeaning = function(word) {
   	 $http({
