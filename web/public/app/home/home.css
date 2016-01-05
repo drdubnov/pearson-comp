@@ -77,6 +77,9 @@ h1, h2, h3, h4, h5, h6 {
     margin: 20px 10px;
     height: 42px;
     width: 175px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 230px;
 }
 
 .logout {
