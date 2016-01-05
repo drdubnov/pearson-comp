@@ -58,6 +58,54 @@ app.post('/secured/account', function(req, res) {
 });
 
 
+//saving essay
+app.post('/secured/account/id/essay', function(req, res) {
+  console.log("save");
+  request({
+    url: 'http://localhost:3005/api/accounts/id/essay', //URL to hit
+    method: 'POST', //Specify the method
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: req.body["data"]
+  }, function(error, response, body) {
+      if(error) {
+          console.log("error in logging in");
+          console.log(error);
+      } else {
+          console.log("successfully updated user's essay " + response.statusCode);
+          res.send(response.statusCode);
+      }
+  });
+});
+
+
+//retrieving essay
+app.get('/secured/account/id/essay', function(req, res) {
+  console.log(req.query["user_id"]);
+  request({
+      url: 'http://localhost:3005/api/accounts/id/essay', //URL to hit
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'GET', //Specify the method
+      qs: {user_id: req.query["user_id"]}
+  }, function(error, response, body){
+
+      if(error) {
+          console.log(error);
+      } else {
+        if (response.statusCode == 200) {
+          var data = JSON.parse(response.body);
+          console.log(data);
+          res.send(200, {user:data});
+        }
+      }
+  });
+});
+
+
+
 //search for a specific topic
 app.get('/secured/searchFTArticles', function(req, res) {
   console.log(req.query["search"]);

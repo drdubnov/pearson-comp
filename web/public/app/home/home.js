@@ -7,6 +7,16 @@ angular.module( 'Pearson.home', [
   $scope.nickname = auth["profile"]["name"];
   console.log( $scope.nickname);
 
+  $http({
+	  url: 'http://localhost:3001/secured/account/id/essay',
+	  method: 'GET',
+	  params: {
+		user_id: auth.profile["identities"][0]["user_id"]
+	  }
+	}).then(function(response) {
+		console.log(response["data"]);
+	});
+
   $scope.findMeaning = function(word) {
   	 $http({
 	  url: 'http://localhost:3001/secured/checkDefinition',
@@ -437,8 +447,19 @@ $scope.search = function(){
 
 $scope.saveEssay = function() {
 
-	var essay = document.getElementById("typearea");
-	$http.post('http://localhost:3001/secured/saveEssay', {id: auth.profile["identities"][0]["user_id"], content: essay}, { 
+
+
+	var essay = document.getElementById("typearea").value;
+	var id = auth.profile["identities"][0]["user_id"];
+
+
+      var essayinfo = JSON.stringify({
+        user_id:id, 
+        essay: essay
+      });
+
+
+	$http.post('http://localhost:3001/secured/account/id/essay', {data: essayinfo}, { 
 	    headers: {
 	    'Accept' : '*/*',
 	    'Content-Type': 'application/json'

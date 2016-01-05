@@ -48,43 +48,11 @@ var User = require('./model/User.js');
 var router = express.Router();
 
 
-// User.find({  }, function(err, user) {
-//       if (err) {
-//       	throw err;
-//       }
 
-//       console.log("delete");
-//         // delete him
-//       User.remove(function(err) {
-//       if (err) {
-//            throw err;
-//       }
-//       console.log('User successfully deleted!');
-
-//       });
-// });
-
-// location.find({  }, function(err, loc) {
-//       if (err) {
-//       	throw err;
-//       }
-
-//       console.log("delete");
-//         // delete him
-//       location.remove(function(err) {
-//       if (err) {
-//            throw err;
-//       }
-//       console.log('Location successfully deleted!');
- 
-//       });
-// });
 
 
 
 router.post('/api/accounts', function (req, res, next) {
-
-	
 
 	User.findOne({user_id: req.body.user_id}, function (err, userObj) {
 	    if (err) {
@@ -95,10 +63,7 @@ router.post('/api/accounts', function (req, res, next) {
 	      res.sendStatus(500);
 	    } else {
 	      console.log('User not found!');
-
-
-	    
-	      		
+  		
 		  var newUser = new User({
 		    user_id: req.body.user_id,
 		    nickname: req.body.nickname,
@@ -120,6 +85,41 @@ router.post('/api/accounts', function (req, res, next) {
 	      		
 	    }
 	 });
+});
+
+
+router.post('/api/accounts/id/essay', function (req, res, next) {
+	User.findOne({user_id: req.body.user_id}, function (err, userObj) {
+	    if (err) {
+	      console.log(err);
+	      res.sendStatus(500);
+	    } else if (userObj) {
+
+	      userObj.essay = req.body.essay;
+
+	      userObj.save(function(err) {
+	    	if (err) {
+	    		throw err;
+	    	}	
+	    	console.log(userObj);
+    		res.sendStatus(200);
+	  	  });	
+	  }	     
+	});
+});
+
+
+router.get('/api/accounts/id/essay' , function (req, res, next) {
+
+
+	User.findOne({user_id:req.query["user_id"] }, function(err, userObj) {
+	  if (err) {
+	    console.log(err);
+	    res.sendStatus(500);
+	  } else if(userObj) {
+	  	res.send(userObj);
+	  } 
+	});
 });
 
 
