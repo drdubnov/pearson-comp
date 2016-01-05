@@ -15,6 +15,9 @@ angular.module( 'Pearson.home', [
 	  }
 	}).then(function(response) {
 		console.log(response["data"]);
+
+		var text = document.getElementById("typearea");
+		text.value = response["data"]["user"]["essay"];
 	});
 
   $scope.findMeaning = function(word) {
