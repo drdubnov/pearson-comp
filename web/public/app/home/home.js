@@ -465,6 +465,7 @@ $scope.createBib = function(article) {
 	var p = document.createElement("p");
 	p.innerHTML = authors + ". " + '"' + title + '"' + ". " + website + " .N.p., n.d. Web. " + day + " " + months[month] + " " + year + ". " + url; 
 
+	biblio.appendChild(p);
 
 
 }
