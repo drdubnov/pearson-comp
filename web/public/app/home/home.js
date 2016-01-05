@@ -207,6 +207,7 @@ function processData(allText) {
 
 //Run results to modal
 window.showResults = function(){
+	document.getElementById("resultsParagraph").innerHTML = "";
 	window.topFiveNGrams();
 	$('#myModal').modal('show');
 }
@@ -232,7 +233,7 @@ function topFiveNGrams(){
 		"Predicted topic - " + bestSubject + "<br>" +
 		"Word Uniqueness Score - " + averageFreq + "<br>" +
 		"Average Sentence Length - " + avgSentenceLength + "<br>" +
-		"Sentence Length Variance - " + avgSentenceVariance + "<br><br>";
+		"Sentence Length Standard Dev. - " + Math.round(Math.sqrt(avgSentenceVariance)) + "<br><br>";
 		
 		document.getElementById("resultsParagraph").innerHTML = Info1 + "<strong>Common Phrases and Frequency</strong> <br> " + response["data"]["top5"].join("<br>");
 	
@@ -243,6 +244,14 @@ function topFiveNGrams(){
 }
 
 window.topFiveNGrams = topFiveNGrams;
+
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
+function replaceAll(str, find, replace) {
+  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
 
 //Function to process the contents of the essay and compute statistics on it
 function processEssay() {
@@ -328,12 +337,14 @@ function processEssay() {
 	}
 	
 	//Computes average sentence length
-	sentences = document.getElementById("typearea").value.replace(".","!");
-	sentences = sentences.replace(/[.,-\/#$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ");
+	sentences = replaceAll(document.getElementById("typearea").value, ".", "!");
+	sentences = replaceAll(sentences, ";", "!");
+	sentences = replaceAll(sentences, "?", "!");
+	sentences = sentences.replace(/[.,-\/#$%\^&\*:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ");
 	sentences = sentences.trim().split("!");
 	
 	avgSentenceLength = 0;
-	avgSentenceVariance = 0;
+	avgSentenceVariance = 0;	
 	count = 0;
 	for (var i =0;i < sentences.length; i ++){
 		//Grab sentence
@@ -363,6 +374,9 @@ function processEssay() {
 	
 	//Computes using Unbiased Estimate Formula
 	avgSentenceVariance = avgSentenceVariance * 1/(count-1);
+	
+	//Normalize average Frequency from 0 to 10.
+	averageFreq = Math.round(((23782115 - averageFreq)/23782115)*10,2);
 	
 	return [bestSubject,averageFreq,avgSentenceLength,avgSentenceVariance];
 	
