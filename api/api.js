@@ -37,6 +37,26 @@ app.get('/secured/ping', function(req, res) {
   res.send(200, {text: "All good. You only get this message if you're authenticated"});
 });
 
+// adding a new account
+app.post('/secured/account', function(req, res) {
+  request({
+    url: 'http://localhost:3005/api/accounts/', //URL to hit
+    method: 'POST', //Specify the method
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: req.body["data"]
+  }, function(error, response, body) {
+      if(error) {
+          console.log("error in logging in");
+          console.log(error);
+      } else {
+          console.log("successfully added a user " + response.statusCode);
+          res.send(response.statusCode);
+      }
+  });
+});
+
 
 //search for a specific topic
 app.get('/secured/searchFTArticles', function(req, res) {

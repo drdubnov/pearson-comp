@@ -436,9 +436,20 @@ $scope.search = function(){
 }
 
 $scope.saveEssay = function() {
-	var essay = document.getElementById("typearea");
 
-	console.log(essay.value);
+	var essay = document.getElementById("typearea");
+	$http.post('http://localhost:3001/secured/saveEssay', {id: auth.profile["identities"][0]["user_id"], content: essay}, { 
+	    headers: {
+	    'Accept' : '*/*',
+	    'Content-Type': 'application/json'
+	   }
+	}).success(function(data, status, headers, config) {
+	      console.log(status);
+		
+	}).error(function(data, status, headers, config) {
+	      console.log(status);
+	});
+
 }
 
 

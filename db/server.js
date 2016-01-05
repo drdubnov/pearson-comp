@@ -1,0 +1,145 @@
+var express = require('express');
+var logger = require('morgan');
+var bodyParser = require('body-parser');
+var cors = require('cors');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
+var app = express();
+var mongoose = require('mongoose');
+
+var dbName = 'Pearson';
+
+mongoose.connect('mongodb://localhost:27017/' + dbName);
+
+app.use(session({ 
+	secret: 'inTunity',
+	resave: false,
+	saveUninitialized: false,
+	store: new MongoStore({
+		mongooseConnection: mongoose.connection,
+		ttl: 24 * 60 * 60 //1 day
+	})
+}));
+
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	extended: false
+}));
+
+var whitelist = ['http://localhost:8100'];
+var cors_options = {
+	origin: function (origin, callback) {
+		var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+		callback(null, originIsWhitelisted);
+	}
+};
+
+//Server settings
+app.all('/api/*', cors(cors_options));
+app.set('port', 3005);
+
+var User = require('./model/User.js');
+
+
+// var Event = require('./model/Event.js');
+
+//routes
+var router = express.Router();
+
+
+// User.find({  }, function(err, user) {
+//       if (err) {
+//       	throw err;
+//       }
+
+//       console.log("delete");
+//         // delete him
+//       User.remove(function(err) {
+//       if (err) {
+//            throw err;
+//       }
+//       console.log('User successfully deleted!');
+
+//       });
+// });
+
+// location.find({  }, function(err, loc) {
+//       if (err) {
+//       	throw err;
+//       }
+
+//       console.log("delete");
+//         // delete him
+//       location.remove(function(err) {
+//       if (err) {
+//            throw err;
+//       }
+//       console.log('Location successfully deleted!');
+ 
+//       });
+// });
+
+
+
+router.post('/api/accounts', function (req, res, next) {
+
+	
+
+	User.findOne({user_id: req.body.user_id}, function (err, userObj) {
+	    if (err) {
+	      console.log(err);
+	      res.sendStatus(500);
+	    } else if (userObj) {
+	      console.log('Found:', userObj);
+	      res.sendStatus(500);
+	    } else {
+	      console.log('User not found!');
+
+
+	    
+	      		
+		  var newUser = new User({
+		    user_id: req.body.user_id,
+		    nickname: req.body.nickname,
+		    email: req.body.email,
+		    essay: ""
+	      });
+
+	      newUser.save(function(err) {
+           if (err) {
+           	 throw err;
+           } else {
+             console.log('User created!');
+             console.log(newUser);
+             res.sendStatus(200);
+           }
+         });
+
+	      	
+	      		
+	    }
+	 });
+});
+
+
+
+
+
+
+
+
+
+
+app.use(router);
+
+//Create the server
+var server = app.listen(app.get('port'), function () {
+	console.log('Express server listening on port ' + server.address().port);
+});
+
+app.use(function (req, res) {
+	var resp = {};
+	resp.error = "Not Supported.";
+	res.status(404).json(resp);
+});
