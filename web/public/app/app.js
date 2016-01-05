@@ -19,7 +19,7 @@ angular.module( 'Pearson', [
       controller: 'LoginCtrl',
       templateUrl: '/app/login/login.html',
       pageTitle: 'Login'
-    });
+    })
 
 
   authProvider.init({
