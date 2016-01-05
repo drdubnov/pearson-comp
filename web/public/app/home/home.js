@@ -205,8 +205,16 @@ function processData(allText) {
     window.wordFreqList = lines;
 }
 
+//Run results to modal
+window.showResults = function(){
+	window.topFiveNGrams();
+	$('#myModal').modal('show');
+}
+
 //Function to return the top 5 most common N-Grams
 function topFiveNGrams(){
+	document.getElementById("pbar").style.visibility = "visible";
+	
 	$http({
 	  url: 'http://localhost:3001/secured/commonPhrases',
 	  method: 'GET',
@@ -214,11 +222,26 @@ function topFiveNGrams(){
 		essay: document.getElementById("typearea").value
 	  }
 	}).then(function(response) {
-		alert(response["data"]["top5"].join("\r\n"));
-		return (response);
+		results = processEssay();
+		bestSubject = results[0];
+		averageFreq = results[1];
+		avgSentenceLength = results[2];
+		avgSentenceVariance = results[3];
+		
+		Info1 = "<strong>Basic Text Information</strong> <br>" + 
+		"Predicted topic - " + bestSubject + "<br>" +
+		"Word Uniqueness Score - " + averageFreq + "<br>" +
+		"Average Sentence Length - " + avgSentenceLength + "<br>" +
+		"Sentence Length Variance - " + avgSentenceVariance + "<br><br>";
+		
+		document.getElementById("resultsParagraph").innerHTML = Info1 + "<strong>Common Phrases and Frequency</strong> <br> " + response["data"]["top5"].join("<br>");
+	
+		//Hide Progressbar
+		document.getElementById("pbar").style.visibility = "hidden";
 	});
 	
 }
+
 window.topFiveNGrams = topFiveNGrams;
 
 //Function to process the contents of the essay and compute statistics on it
@@ -340,10 +363,6 @@ function processEssay() {
 	
 	//Computes using Unbiased Estimate Formula
 	avgSentenceVariance = avgSentenceVariance * 1/(count-1);
-	
-	alert("Predicted Subject is " + bestSubject + "\r\n Average Rank: " + averageFreq + " \r\n" + "Average Sentence Length: " + avgSentenceLength + "\r\n"
-	+ "Variance of Sentence Length: " + avgSentenceVariance
-	);
 	
 	return [bestSubject,averageFreq,avgSentenceLength,avgSentenceVariance];
 	

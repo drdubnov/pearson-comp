@@ -23,6 +23,7 @@
 </div>
 
   <button class="mint-button" id="copyButton"><h4>Copy Text to Clipboard</h4></button>
+  <button class="mint-button" onclick="showResults()"><h4>Analyze</h4></button>
   <div>
   <button class="mint-button" onclick="toggleStatus()" id="toggleButton" style="visibility:hidden;float:right;margin-top:-40px;margin-left:5px"><h4>Toggle <br> Definition</h4></button>
   <label style="float:right" id="statusbar">Status:</label>
@@ -41,3 +42,25 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">MINT Results</h4>
+      </div>
+      <div class="modal-body">
+	  <div class="progress" id="pbar">
+  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:100%">Loading Essay Statistics</div></div>
+        <p id="resultsParagraph" style="font-size:16px"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
