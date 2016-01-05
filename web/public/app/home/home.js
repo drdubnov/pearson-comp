@@ -6,7 +6,7 @@ angular.module( 'Pearson.home', [
   $scope.auth = auth;
 
   $scope.findMeaning = function(word) {
-  	  $http({
+  	 $http({
 	  url: 'http://localhost:3001/secured/checkDefinition',
 	  method: 'GET',
 	  params: {
