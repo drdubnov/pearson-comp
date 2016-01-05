@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 
 var dbName = 'Pearson';
 
-mongoose.connect('mongodb://localhost:27017/' + dbName);
+mongoose.connect('mongodb://ec2-52-27-56-16.us-west-2.compute.amazonaws.com/' + dbName);
 
 app.use(session({ 
 	secret: 'inTunity',
@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 
-var whitelist = ['http://localhost:8100'];
+var whitelist = ['http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:8100'];
 var cors_options = {
 	origin: function (origin, callback) {
 		var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
