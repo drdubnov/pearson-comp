@@ -429,7 +429,7 @@ $scope.search = function(){
 			new_link.onclick = function() {
 				var index = this.id;
 				$scope.grabText(results[index]["url"]);
-				$scope.createBib(results[index]["url"]);
+				$scope.createBib(results[index]);
 
 
 			}
@@ -447,7 +447,26 @@ $scope.search = function(){
 
 
 $scope.createBib = function(article) {
-	console.log(createBib);
+	console.log(article);
+	var authors = article["contributors"][0];
+	var title = article["headline"];
+	var website = "Financial Times";
+	var url = article["article_url"];
+	var day = new Date().getDate();
+	var month = new Date().getMonth();
+	var year = new Date().getFullYear();
+
+	console.log(url);
+
+	var months = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sept.", "Oct.", "Nov", "Dec."]
+
+	var biblio = document.getElementById("bib");
+
+	var p = document.createElement("p");
+	p.innerHTML = authors + ". " + '"' + title + '"' + ". " + website + " .N.p., n.d. Web. " + day + " " + months[month] + " " + year + ". " + url; 
+
+
+
 }
 
 $scope.saveEssay = function() {
@@ -460,8 +479,12 @@ $scope.saveEssay = function() {
 
       var essayinfo = JSON.stringify({
         user_id:id, 
-        essay: essay
+        essay: essay,
+        bib: document.getElementById("bib").innerHTML
       });
+
+
+
 
 
 	$http.post('http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/account/id/essay', {data: essayinfo}, { 
