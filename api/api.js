@@ -83,9 +83,13 @@ app.get('/secured/checkArticleFree', function(req, res) {
 });
 
 app.get('/secured/checkDefinition', function(req, res) {
-  console.log(req.query["word_to_check"]);
+	//Remove punctuation from the word.
+  cleanedWord = req.query["word_to_check"].replace(/[.,-"\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ");
+  cleanedWord = cleanedWord.trim().toLowerCase();
+  console.log(cleanedWord);
+  
   request({
-      url: "http://api.pearson.com/v2/dictionaries/entries?headword=" + req.query["word_to_check"], //Article URL to verify
+      url: "http://api.pearson.com/v2/dictionaries/entries?headword=" + cleanedWord, //Article URL to verify
       headers: {
         'Content-Type': 'application/json'
       },

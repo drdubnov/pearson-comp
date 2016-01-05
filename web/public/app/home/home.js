@@ -13,14 +13,35 @@ angular.module( 'Pearson.home', [
 		word_to_check: word
 	  }
 	}).then(function(response) {
+		var definitions = [];
+		for (var i =0;i< response["data"]["results"].length;i++){
+			window.objx = response["data"]["results"][i];
+			if (response["data"]["results"][i]["senses"] != null && response["data"]["results"][i]["senses"][0] != null){
+				if (response["data"]["results"][i]["senses"][0]["definition"] != null){
+					definitions.push(response["data"]["results"][i]["senses"][0]["definition"]);
+				}
+			}
+		}
+		
+		document.getElementById("statusbar").innerHTML = "Status: Definition of '" + word + "' : " + definitions[0];
 		console.log(response["data"]);
-
+		
+		window.definitionNum = 0;
+		window.word = word;
+		window.definitions = definitions;
+		
+		document.getElementById("toggleButton").style.visibility = "visible";
 	}); // end of http get
 
   }
-
-
-
+  
+  toggleStatus = function(){
+	  if (window.definitions != null){
+		  window.definitionNum = (window.definitionNum+1) % window.definitions.length;
+		  document.getElementById("statusbar").innerHTML = "Status: Definition of '" + window.word + "' : " + window.definitions[window.definitionNum];
+	  }
+  }
+  
   $scope.logout = function() {
     auth.signout();
     store.remove('profile');
@@ -62,7 +83,7 @@ angular.module( 'Pearson.home', [
 
 		var info = document.getElementById("infoarea");
 		var container = document.createElement("div");
-
+		window.response = response;
 		for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
 
 			var strArray = response["data"]["result"]["text"][i].split(" ");
@@ -76,10 +97,17 @@ angular.module( 'Pearson.home', [
 
 				word.onclick = function() {
 					var results = $scope.findMeaning(this.innerHTML);
-
+					
 
 				}
 				container.appendChild(word);
+				
+				//Append space element
+				var space =  document.createElement("span");
+				space.innerHTML = " ";
+				container.appendChild(space);
+				
+				
 
 			}
 

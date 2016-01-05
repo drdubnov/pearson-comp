@@ -41,6 +41,7 @@ h1, h2, h3, h4, h5, h6 {
 	height: 450px;
 	resize: none;
 	margin-bottom: 20px;
+	float:left;
 	overflow-y: scroll;
 	display: inline-block;
 }
@@ -50,7 +51,7 @@ h1, h2, h3, h4, h5, h6 {
 	height: 450px;
 	resize: none;
 	margin-left: 50px
-
+	float:right;
 	margin-bottom: 20px;
 	overflow-y: scroll;
 	border: 1px solid black;

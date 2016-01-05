@@ -15,11 +15,18 @@
 <div class="content">
   <h4 style="float:left">Enter Text Here</h4>
   <h4 align="right" style="float:right">Grade Level Prediction: (Enter Content) </h4>
+  
+<div>
   <textarea id="typearea" placeholder="Enter Your Essay Content Here" ></textarea>
 	
   <div id="infoarea"></div>
+</div>
 
   <button class="mint-button" id="copyButton"><h4>Copy Text to Clipboard</h4></button>
+  <div>
+  <button class="mint-button" onclick="toggleStatus()" id="toggleButton" style="visibility:hidden;float:right;margin-top:-40px;margin-left:5px"><h4>Toggle <br> Definition</h4></button>
+  <label style="float:right" id="statusbar">Status:</label>
+  </div>
   <!--<button class="mint-button" ng-click="search()">Search Text</button>-->
   
  <!--  <input class="upButton" type="image" src="images/UpArrow.bmp" alt="Submit" width="48" height="48" onmousedown="textScrollDown()">
