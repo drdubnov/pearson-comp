@@ -25,7 +25,7 @@ angular.module( 'Pearson.home', [
 			}
 		}
 		
-		document.getElementById("statusbar").innerHTML = "Status: Definition of '" + word + "' : " + definitions[0];
+		document.getElementById("statusbar").innerHTML = "Definition of '" + word + "' : " + definitions[0];
 		console.log(response["data"]);
 		
 		window.definitionNum = 0;
@@ -40,7 +40,7 @@ angular.module( 'Pearson.home', [
   toggleStatus = function(){
 	  if (window.definitions != null){
 		  window.definitionNum = (window.definitionNum+1) % window.definitions.length;
-		  document.getElementById("statusbar").innerHTML = "Status: Definition of '" + window.word + "' : " + window.definitions[window.definitionNum];
+		  document.getElementById("statusbar").innerHTML = "Definition of '" + window.word + "' : " + window.definitions[window.definitionNum];
 	  }
   }
   
@@ -101,8 +101,26 @@ angular.module( 'Pearson.home', [
 				word.onclick = function() {
 					var results = $scope.findMeaning(this.innerHTML);
 					
-
 				}
+
+				// word.onmouseover = function() {
+
+				// 	this.style.color = "red";
+				// }
+
+				$(word).hover(
+				
+	               function () {
+	                  $(this).css({"color":"red"});
+	               }, 
+					
+	               function () {
+	                  $(this).css({"color":"black"});
+	               }
+	            );
+
+
+
 				container.appendChild(word);
 				
 				//Append space element
