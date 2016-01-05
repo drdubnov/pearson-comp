@@ -435,6 +435,12 @@ $scope.search = function(){
 	}); // end of http get
 }
 
+$scope.saveEssay = function() {
+	var essay = document.getElementById("typearea");
+
+	console.log(essay.value);
+}
+
 
 
 
