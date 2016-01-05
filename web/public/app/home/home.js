@@ -142,11 +142,7 @@ angular.module( 'Pearson.home', [
 
 			}
 
-			
-
-
-
-
+		
 
 			// document.getElementById("infoarea").innerHTML += response["data"]["result"]["text"][i];
 		}
@@ -433,6 +429,7 @@ $scope.search = function(){
 			new_link.onclick = function() {
 				var index = this.id;
 				$scope.grabText(results[index]["url"]);
+				$scope.createBib(results[index]["url"]);
 
 
 			}
@@ -446,6 +443,11 @@ $scope.search = function(){
 
 
 	}); // end of http get
+}
+
+
+$scope.createBib = function(article) {
+	console.log(createBib);
 }
 
 $scope.saveEssay = function() {
