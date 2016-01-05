@@ -84,7 +84,7 @@ app.get('/secured/checkArticleFree', function(req, res) {
 
 app.get('/secured/checkDefinition', function(req, res) {
 	//Remove punctuation from the word.
-  cleanedWord = req.query["word_to_check"].replace(/[.,-"\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ");
+  cleanedWord = req.query["word_to_check"].replace(/[.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"").replace(/\s{2,}/g," ");
   cleanedWord = cleanedWord.trim().toLowerCase();
   console.log(cleanedWord);
   
