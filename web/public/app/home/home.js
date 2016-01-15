@@ -448,7 +448,14 @@ $scope.search = function(){
 
 $scope.createBib = function(article) {
 	console.log(article);
-	var authors = article["contributors"][0];
+
+	var authors;
+	if ('contributors' in article) {
+		
+	}
+	// if (article["contributors"].length > 0) {
+	// 	authors = article["contributors"][0];
+	// }
 	var title = article["headline"];
 	var website = "Financial Times";
 	var url = article["article_url"];
@@ -483,10 +490,6 @@ $scope.saveEssay = function() {
         essay: essay,
         bib: document.getElementById("bib").innerHTML
       });
-
-
-
-
 
 	$http.post('http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/account/id/essay', {data: essayinfo}, { 
 	    headers: {
