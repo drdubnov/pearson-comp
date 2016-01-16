@@ -552,8 +552,9 @@ $scope.createBib = function(article) {
 	secondcol.className = "col-md-4";
 		var deleteButton = document.createElement("button");
 		deleteButton.innerHTML = "X";
+
 		deleteButton.onclick = function() {
-			
+			biblio.removeChild(content);
 		}
 
 
