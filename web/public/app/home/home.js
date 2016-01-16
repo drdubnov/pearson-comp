@@ -449,13 +449,21 @@ $scope.search = function(){
 $scope.createBib = function(article) {
 	console.log(article);
 
-	var authors;
+	var authors = ''
 	if ('contributors' in article) {
-		
-	}
-	// if (article["contributors"].length > 0) {
-	// 	authors = article["contributors"][0];
-	// }
+		if (article["contributors"].length > 0) {
+			var authors_array = [];
+			for (var i = 0; i < article["contributors"].length; i++) {
+				var splitNamesIntoParts = article["contributors"][i].split(" ");
+				var newname = splitNamesIntoParts[1] + ", " + splitNamesIntoParts[0];
+				authors_array.push(newname);
+			}
+			for (var j = 0; j < authors_array.length; j++) {
+				authors += authors_array[j] + ". ";
+			}
+		}
+	} 
+	
 	var title = article["headline"];
 	var website = "Financial Times";
 	var url = article["article_url"];
@@ -463,14 +471,71 @@ $scope.createBib = function(article) {
 	var month = new Date().getMonth();
 	var year = new Date().getFullYear();
 
-	console.log(url);
+	var article_date = article["article_date"];
+	var article_year = article_date.substring(0,4);
+	var article_month = article_date.substring(5,7);
+	var article_day = article_date.substring(8,10);
 
 	var months = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sept.", "Oct.", "Nov", "Dec."]
 
 	var biblio = document.getElementById("bib");
 
 	var p = document.createElement("p");
-	p.innerHTML = authors + ". " + '"' + title + '"' + ". " + website + " .N.p., n.d. Web. " + day + " " + months[month] + " " + year + ". " + url; 
+
+	if (authors != '') {
+		var authorspan = document.createElement("span");
+		authorspan.innerHTML = authors + " ";
+
+		var titlespan = document.createElement("span");
+		titlespan.innerHTML = '"' + title + "." + '" ' ;
+
+		var websitetitle = document.createElement("span");
+			var webname_italics = document.createElement('i');
+			webname_italics.innerHTML = website + ". ";
+		websitetitle.appendChild(webname_italics);
+
+		var published = document.createElement("span");
+		published.innerHTML = "Financial Times, " + article_day + " " + months[article_month - 1] + " " + article_year + ". Web. ";
+		
+		var accessed = document.createElement("span");
+		accessed.innerHTML = day + " " + months[month] + " " + year + ". " + '&lt' + url + '&gt' + ".";
+
+
+		p.appendChild(authorspan);
+		p.appendChild(titlespan);
+		p.appendChild(websitetitle);	
+		p.appendChild(published);
+		p.appendChild(accessed);
+
+
+
+
+		//p.innerHTML = authors + ". " + '"' + title + '"' + ". " + website + " .N.p., n.d. Web. " + day + " " + months[month] + " " + year + ". " + url; 
+	} else {
+		
+
+		var titlespan = document.createElement("span");
+		titlespan.innerHTML = '"' + title + "." + '" ' ;
+
+		var websitetitle = document.createElement("span");
+			var webname_italics = document.createElement('i');
+			webname_italics.innerHTML = website + ". ";
+		websitetitle.appendChild(webname_italics);
+
+		var published = document.createElement("span");
+		published.innerHTML = "Financial Times, " + article_day + " " + months[article_month - 1] + " " + article_year + ". Web. ";
+		
+		var accessed = document.createElement("span");
+		accessed.innerHTML = day + " " + months[month] + " " + year + ". " + '&lt' + url + '&gt' + ".";
+
+
+
+		p.appendChild(titlespan);
+		p.appendChild(websitetitle);	
+		p.appendChild(published);
+		p.appendChild(accessed);
+	}
+	
 
 	biblio.appendChild(p);
 
