@@ -565,6 +565,24 @@ $scope.createBib = function(article) {
 
 	content.appendChild(firstcol);
 	content.appendChild(secondcol);
+
+
+	content.onclick = function() {
+		$scope.grabText(article["url"]);
+	}
+
+	$(content).hover(
+				
+	               function () {
+	                  $(this).css({"color":"red"});
+	               }, 
+					
+	               function () {
+	                  $(this).css({"color":"white"});
+	               }
+	            );
+
+
 	biblio.appendChild(content);
 
 
