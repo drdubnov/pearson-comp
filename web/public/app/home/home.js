@@ -537,7 +537,34 @@ $scope.createBib = function(article) {
 	}
 	
 
-	biblio.appendChild(p);
+
+
+
+
+	var content = document.createElement("div");
+	content.className = "row";
+
+	var firstcol = document.createElement("div");
+	firstcol.className = "col-md-8";
+	firstcol.appendChild(p);
+
+	var secondcol = document.createElement("div");
+	secondcol.className = "col-md-4";
+		var deleteButton = document.createElement("button");
+		deleteButton.innerHTML = "X";
+		deleteButton.onclick = function() {
+			
+		}
+
+
+	secondcol.appendChild(deleteButton);
+
+	
+
+
+	content.appendChild(firstcol);
+	content.appendChild(secondcol);
+	biblio.appendChild(content);
 
 
 }
