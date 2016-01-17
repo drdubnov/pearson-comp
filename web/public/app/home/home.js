@@ -800,7 +800,7 @@ $scope.saveEssay = function() {
         essay: essay,
         bib: sources,
         last_readinfo: lastread,
-        searched_info: current_search
+        searched_info: document.getElementById("search").value
     });
 
 
