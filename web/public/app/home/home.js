@@ -6,6 +6,9 @@ angular.module( 'Pearson.home', [
   $scope.auth = auth;
   $scope.nickname = auth["profile"]["name"];
 
+  var body = document.body,
+    html = document.documentElement;
+
   var bibcontent;
   var deferred = $q.defer();
 
@@ -15,7 +18,9 @@ angular.module( 'Pearson.home', [
 
 
   $scope.scrollDown = function() {
-  	window.scrollBy(0, 200);
+    var height = Math.max( body.scrollHeight, body.offsetHeight, 
+                       html.clientHeight, html.scrollHeight, html.offsetHeight );
+  	window.scrollBy(0, height);
   }
 
 
