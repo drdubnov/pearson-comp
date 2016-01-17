@@ -9,6 +9,8 @@ angular.module( 'Pearson.home', [
   var bibcontent;
   var deferred = $q.defer();
 
+  var lastread;
+
 
   $scope.scrollDown = function() {
   	window.scrollBy(0, 200);
@@ -26,8 +28,9 @@ angular.module( 'Pearson.home', [
 		text.value = data["user"]["essay"];
 
 
-        if (data["user"]["infoarea"] != "") {
-            document.getElementById("infoarea").innerHTML = data["user"]["infoarea"];
+        if (data["user"]["last_readinfo"] != "") {
+            $scope.pullArticleContents(data["user"]["last_readinfo"]);
+            //document.getElementById("infoarea").innerHTML = data["user"]["infoarea"];
         }
         
 
@@ -93,7 +96,7 @@ angular.module( 'Pearson.home', [
 
 
 				  $http({
-					  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkArticleFree',
+					  url: 'http://localhost:3001/secured/checkArticleFree',
 					  method: 'GET',
 					  params: {
 						url_to_check: url
@@ -134,6 +137,7 @@ angular.module( 'Pearson.home', [
 				$(firstcol).click(function(c) {
 
 				  $scope.grabText($(this).children()[0].id);
+                    lastread = $(this).children()[0].id;
 
 				   
 				});
@@ -232,6 +236,7 @@ angular.module( 'Pearson.home', [
   //Run article through Pearson API to retrieve data
   $scope.pullArticleContents = function(pearson_article_url){
 	var result = "EMPTY";
+
 	$http({
 	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkArticleFree',
 	  method: 'GET',
@@ -242,6 +247,7 @@ angular.module( 'Pearson.home', [
 		document.getElementById("infoarea").innerHTML = "";
 
 		var info = document.getElementById("infoarea");
+
 		var container = document.createElement("div");
 		window.response = response;
 		for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
@@ -574,6 +580,7 @@ $scope.search = function(){
 			new_link.onclick = function() {
 				var index = this.id;
 				$scope.grabText(results[index]["url"]);
+                lastread = results[index]["url"];
 				$scope.createBib(results[index]);
 
 
@@ -765,6 +772,7 @@ $scope.createBib = function(article) {
 
 
 	content.onclick = function() {
+         lastread = article["url"];
 		$scope.grabText(article["url"]);
 	}
 
@@ -804,7 +812,7 @@ $scope.saveEssay = function() {
         user_id:id, 
         essay: essay,
         bib: sources,
-        infoarea: document.getElementById("infoarea").innerHTML
+        last_readinfo: lastread
     });
 
 

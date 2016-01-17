@@ -86,7 +86,7 @@ router.post('/api/accounts', function (req, res, next) {
 		    email: req.body.email,
 		    essay: "",
 		    bib: "",
-		    infoarea: ""
+		    last_readinfo: ""
 
 	      });
 
@@ -122,7 +122,7 @@ router.post('/api/accounts/id/essay', function (req, res, next) {
 
 	      userObj.essay = req.body.essay;
 	      userObj.bib = req.body.bib;
-	       userObj.infoarea = req.body.infoarea;
+	      userObj.last_readinfo = req.body.last_readinfo;
 
 
 	      userObj.save(function(err) {
