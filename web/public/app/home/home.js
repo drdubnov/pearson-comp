@@ -11,6 +11,7 @@ angular.module( 'Pearson.home', [
 
   var lastread;
   var current_search;
+   $scope.search = "";
 
 
   $scope.scrollDown = function() {
@@ -36,7 +37,7 @@ angular.module( 'Pearson.home', [
 
         if ("searched_info" in data["user"] != "") {
             document.getElementById("search").value = data["user"]["searched_info"];
-            $scope.search();
+            $scope.searchInfo();
         }
         
 
@@ -346,7 +347,7 @@ angular.module( 'Pearson.home', [
 
 $('#search').on("keypress", function(e) {
         if (e.keyCode == 13) {
-			$scope.search();
+			$scope.searchInfo();
             current_search = document.getElementById("search").value;
             return false; // prevent the button click from happening
         }
@@ -592,7 +593,7 @@ function processEssay() {
 
 window.processEssay = processEssay;
 
-$scope.search = function(){
+$scope.searchInfo = function(){
 	$http({
 	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/searchFTArticles',
 	  method: 'GET',
