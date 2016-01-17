@@ -34,7 +34,7 @@ angular.module( 'Pearson.home', [
             $scope.pullArticleContents(data["user"]["last_readinfo"]);
         }
 
-        if (data["user"]["searched_info"] != "") {
+        if ("searched_info" in data["user"] != "") {
             document.getElementById("search").value = data["user"]["searched_info"];
             $scope.search();
         }
