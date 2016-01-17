@@ -24,7 +24,12 @@ angular.module( 'Pearson.home', [
 	}).success(function(data, status, headers, config) {
 	   var text = document.getElementById("typearea");
 		text.value = data["user"]["essay"];
-        document.getElementById("infoarea").innerHTML = data["user"]["infoarea"];
+        if (data["user"]["infoarea"] != '') {
+            document.getElementById("infoarea").innerHTML = data["user"]["infoarea"];
+        }
+        
+
+
 		bibcontent = data["user"]["bib"];
 		var temp = new Array();
 		for (var i = 0; i < bibcontent.length; i++) {
