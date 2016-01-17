@@ -58,10 +58,12 @@ angular.module( 'Pearson.home', [
 				$(firstcol).hover(	
 			       function () {
 			          $(this).css({"color":"red"});
+			          $(this).css('cursor','pointer');
 			       }, 
 					
 			       function () {
 			          $(this).css({"color":"white"});
+			          $(this).css('cursor','auto');
 			       }
 			    );
 				var secondcol = document.createElement("div");
@@ -647,6 +649,9 @@ $scope.createBib = function(article) {
 
 		deleteButton.onclick = function() {
 			biblio.removeChild(content);
+			document.getElementById("infoarea").innerHTML = "";
+
+
 		}
 
 
@@ -662,10 +667,12 @@ $scope.createBib = function(article) {
 	$(firstcol).hover(	
        function () {
           $(this).css({"color":"red"});
+           $(this).css('cursor','pointer');
        }, 
 		
        function () {
           $(this).css({"color":"white"});
+           $(this).css('cursor','auto');
        }
     );
 
