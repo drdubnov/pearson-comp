@@ -24,7 +24,9 @@ angular.module( 'Pearson.home', [
 	}).success(function(data, status, headers, config) {
 	   var text = document.getElementById("typearea");
 		text.value = data["user"]["essay"];
-        if (data["user"]["infoarea"] != '') {
+
+
+        if (data["user"]["infoarea"] != "") {
             document.getElementById("infoarea").innerHTML = data["user"]["infoarea"];
         }
         
