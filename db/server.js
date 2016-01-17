@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 
 var dbName = 'Pearson';
 
-mongoose.connect('mongodb://ec2-52-27-56-16.us-west-2.compute.amazonaws.com/' + dbName);
+mongoose.connect('mongodb://localhost:27017/' + dbName);
 
 app.use(session({ 
 	secret: 'inTunity',
@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({
 	extended: false
 }));
 
-var whitelist = ['http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:8100'];
+var whitelist = ['http://localhost:8100'];
 var cors_options = {
 	origin: function (origin, callback) {
 		var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
@@ -49,6 +49,22 @@ var router = express.Router();
 
 
 
+// User.find({  }, function(err, user) {
+//       if (err) {
+//       	throw err;
+//       }
+
+//       console.log("delete");
+//         // delete him
+//       User.remove(function(err) {
+//       if (err) {
+//            throw err;
+//       }
+//       console.log('User successfully deleted!');
+
+//       });
+// });
+
 
 
 
@@ -68,7 +84,8 @@ router.post('/api/accounts', function (req, res, next) {
 		    user_id: req.body.user_id,
 		    nickname: req.body.nickname,
 		    email: req.body.email,
-		    essay: ""
+		    essay: "",
+		    bib: ""
 	      });
 
 	      newUser.save(function(err) {
@@ -89,13 +106,21 @@ router.post('/api/accounts', function (req, res, next) {
 
 
 router.post('/api/accounts/id/essay', function (req, res, next) {
+
+
+
+
 	User.findOne({user_id: req.body.user_id}, function (err, userObj) {
 	    if (err) {
 	      console.log(err);
 	      res.sendStatus(500);
 	    } else if (userObj) {
 
+
+
 	      userObj.essay = req.body.essay;
+	      userObj.bib = req.body.bib;
+
 
 	      userObj.save(function(err) {
 	    	if (err) {

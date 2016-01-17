@@ -1,28 +1,122 @@
 angular.module( 'Pearson.home', [
 'auth0'
 ])
-.controller( 'HomeCtrl', function HomeController( $scope, auth, $http, $location, store ) {
+.controller( 'HomeCtrl', function HomeController( $scope, auth, $http, $location, store, $q ) {
 
   $scope.auth = auth;
   $scope.nickname = auth["profile"]["name"];
-  console.log( $scope.nickname);
+
+  var bibcontent;
+  var deferred = $q.defer();
+
+
+  $scope.scrollDown = function() {
+  	window.scrollBy(0, 200);
+  }
+
 
   $http({
-	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/account/id/essay',
+	  url: 'http://localhost:3001/secured/account/id/essay',
 	  method: 'GET',
 	  params: {
 		user_id: auth.profile["identities"][0]["user_id"]
 	  }
-	}).then(function(response) {
-		console.log(response["data"]);
+	}).success(function(data, status, headers, config) {
+	      var text = document.getElementById("typearea");
+		text.value = data["user"]["essay"];
 
-		var text = document.getElementById("typearea");
-		text.value = response["data"]["user"]["essay"];
+		bibcontent = data["user"]["bib"];
+		var temp = new Array();
+		for (var i = 0; i < bibcontent.length; i++) {
+			temp.push(bibcontent[i]);
+		}
+
+		deferred.resolve(temp);
+		
+	}).error(function(data, status, headers, config) {
+	      console.log(status);
 	});
+
+
+
+	$q.all(deferred).then(function(data){
+    	if (data.promise.length > 0) {
+			var biblio = document.getElementById("bib");
+
+			var i;
+			var deleteButton;
+			for (i = 0; i < data.promise.length; i++) {
+				content = document.createElement("div");
+				content.className = "row";
+				content.id = "content" + i;
+				var firstcol = document.createElement("div");
+				firstcol.className = "col-md-8";
+
+
+				firstcol.innerHTML = data.promise[i];
+
+				$(firstcol).hover(	
+			       function () {
+			          $(this).css({"color":"red"});
+			       }, 
+					
+			       function () {
+			          $(this).css({"color":"white"});
+			       }
+			    );
+				var secondcol = document.createElement("div");
+				secondcol.className = "col-md-4";
+				deleteButton = document.createElement("button");
+				deleteButton.innerHTML = "X";
+
+
+				
+				
+				secondcol.appendChild(deleteButton);
+				content.appendChild(firstcol);
+				content.appendChild(secondcol);
+				biblio.appendChild(content);
+
+				$(deleteButton).click(function(c) {
+				  $(this).parent().parent().remove();
+				   
+				});
+				$(firstcol).click(function(c) {
+
+				  $scope.grabText($(this).children()[0].id);
+
+				   
+				});
+			}
+		}
+
+
+
+
+	});
+
+
+
+
+ //  .then(function(response) {
+	// 	//console.log(response["data"]);
+
+	// 	var text = document.getElementById("typearea");
+	// 	text.value = response["data"]["user"]["essay"];
+
+	// 	bibcontent = response["data"]["user"]["bib"];
+
+
+
+		
+
+
+
+	// });
 
   $scope.findMeaning = function(word) {
   	 $http({
-	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkDefinition',
+	  url: 'http://localhost:3001/secured/checkDefinition',
 	  method: 'GET',
 	  params: {
 		word_to_check: word
@@ -89,7 +183,7 @@ angular.module( 'Pearson.home', [
   $scope.pullArticleContents = function(pearson_article_url){
 	var result = "EMPTY";
 	$http({
-	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkArticleFree',
+	  url: 'http://localhost:3001/secured/checkArticleFree',
 	  method: 'GET',
 	  params: {
 		url_to_check: pearson_article_url
@@ -244,7 +338,7 @@ function topFiveNGrams(){
 	document.getElementById("pbar").style.visibility = "visible";
 	
 	$http({
-	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/commonPhrases',
+	  url: 'http://localhost:3001/secured/commonPhrases',
 	  method: 'GET',
 	  params: {
 		essay: document.getElementById("typearea").value
@@ -413,7 +507,7 @@ window.processEssay = processEssay;
 
 $scope.search = function(){
 	$http({
-	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/searchFTArticles',
+	  url: 'http://localhost:3001/secured/searchFTArticles',
 	  method: 'GET',
 	  params: {
 		search: document.getElementById("search").value
@@ -447,7 +541,6 @@ $scope.search = function(){
 
 
 $scope.createBib = function(article) {
-	console.log(article);
 
 	var authors = ''
 	if ('contributors' in article) {
@@ -481,6 +574,7 @@ $scope.createBib = function(article) {
 	var biblio = document.getElementById("bib");
 
 	var p = document.createElement("p");
+	p.id = article["url"];
 
 	if (authors != '') {
 		var authorspan = document.createElement("span");
@@ -507,10 +601,6 @@ $scope.createBib = function(article) {
 		p.appendChild(published);
 		p.appendChild(accessed);
 
-
-
-
-		//p.innerHTML = authors + ". " + '"' + title + '"' + ". " + website + " .N.p., n.d. Web. " + day + " " + months[month] + " " + year + ". " + url; 
 	} else {
 		
 
@@ -544,9 +634,11 @@ $scope.createBib = function(article) {
 	var content = document.createElement("div");
 	content.className = "row";
 
+
 	var firstcol = document.createElement("div");
 	firstcol.className = "col-md-8";
 	firstcol.appendChild(p);
+
 
 	var secondcol = document.createElement("div");
 	secondcol.className = "col-md-4";
@@ -559,10 +651,6 @@ $scope.createBib = function(article) {
 
 
 	secondcol.appendChild(deleteButton);
-
-	
-
-
 	content.appendChild(firstcol);
 	content.appendChild(secondcol);
 
@@ -571,16 +659,15 @@ $scope.createBib = function(article) {
 		$scope.grabText(article["url"]);
 	}
 
-	$(content).hover(
-				
-	               function () {
-	                  $(this).css({"color":"red"});
-	               }, 
-					
-	               function () {
-	                  $(this).css({"color":"white"});
-	               }
-	            );
+	$(firstcol).hover(	
+       function () {
+          $(this).css({"color":"red"});
+       }, 
+		
+       function () {
+          $(this).css({"color":"white"});
+       }
+    );
 
 
 	biblio.appendChild(content);
@@ -589,20 +676,27 @@ $scope.createBib = function(article) {
 }
 
 $scope.saveEssay = function() {
-
-
-
 	var essay = document.getElementById("typearea").value;
 	var id = auth.profile["identities"][0]["user_id"];
 
+	var citations = document.getElementsByClassName("col-md-8");
+	var sources = new Array();
+	for (var i = 0; i < citations.length; i++) {
+		console.log(citations[i].innerHTML);
+		sources.push(citations[i].innerHTML);
+	}
 
-      var essayinfo = JSON.stringify({
+
+
+    var essayinfo = JSON.stringify({
         user_id:id, 
         essay: essay,
-        bib: document.getElementById("bib").innerHTML
-      });
+        bib: sources
+    });
 
-	$http.post('http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/account/id/essay', {data: essayinfo}, { 
+
+
+	$http.post('http://localhost:3001/secured/account/id/essay', {data: essayinfo}, { 
 	    headers: {
 	    'Accept' : '*/*',
 	    'Content-Type': 'application/json'

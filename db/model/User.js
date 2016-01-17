@@ -6,7 +6,8 @@ var User = new Schema({
 	user_id: {type: String, unique: true },
 	nickname: String,
 	email: String,
-	essay: String
+	essay: String,
+	bib : [String]
 
 	
 });
