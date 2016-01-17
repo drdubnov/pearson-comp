@@ -16,15 +16,15 @@ angular.module( 'Pearson.home', [
 
 
   $http({
-	  url: 'http://localhost:3001/secured/account/id/essay',
+	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/account/id/essay',
 	  method: 'GET',
 	  params: {
 		user_id: auth.profile["identities"][0]["user_id"]
 	  }
 	}).success(function(data, status, headers, config) {
-	      var text = document.getElementById("typearea");
+	   var text = document.getElementById("typearea");
 		text.value = data["user"]["essay"];
-
+        document.getElementById("infoarea").innerHTML = data["user"]["infoarea"];
 		bibcontent = data["user"]["bib"];
 		var temp = new Array();
 		for (var i = 0; i < bibcontent.length; i++) {
@@ -86,7 +86,7 @@ angular.module( 'Pearson.home', [
 
 
 				  $http({
-					  url: 'http://localhost:3001/secured/checkArticleFree',
+					  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkArticleFree',
 					  method: 'GET',
 					  params: {
 						url_to_check: url
@@ -105,15 +105,6 @@ angular.module( 'Pearson.home', [
 								var word =  document.createElement("span");
 
 								word.innerHTML = strArray[j];
-
-
-
-								word.onclick = function() {
-									var results = $scope.findMeaning(this.innerHTML);
-									
-								}
-
-
 								container.appendChild(word);
 								
 								//Append space element
@@ -125,7 +116,7 @@ angular.module( 'Pearson.home', [
 
 						test.appendChild(container);
 						if (test.innerHTML == document.getElementById("infoarea").innerHTML) {
-		
+
 							document.getElementById("infoarea").innerHTML = "";
 						}
 
@@ -168,7 +159,7 @@ angular.module( 'Pearson.home', [
 
   $scope.findMeaning = function(word) {
   	 $http({
-	  url: 'http://localhost:3001/secured/checkDefinition',
+	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkDefinition',
 	  method: 'GET',
 	  params: {
 		word_to_check: word
@@ -235,7 +226,7 @@ angular.module( 'Pearson.home', [
   $scope.pullArticleContents = function(pearson_article_url){
 	var result = "EMPTY";
 	$http({
-	  url: 'http://localhost:3001/secured/checkArticleFree',
+	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkArticleFree',
 	  method: 'GET',
 	  params: {
 		url_to_check: pearson_article_url
@@ -299,7 +290,8 @@ angular.module( 'Pearson.home', [
 
 		window.objectX = response;
 		//window.objectX["data"]["result"]["text"][1]
-		return document.getElementById("infoarea").innerHTML;
+		return response
+		
 	}); // end of http get
   }
   
@@ -390,7 +382,7 @@ function topFiveNGrams(){
 	document.getElementById("pbar").style.visibility = "visible";
 	
 	$http({
-	  url: 'http://localhost:3001/secured/commonPhrases',
+	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/commonPhrases',
 	  method: 'GET',
 	  params: {
 		essay: document.getElementById("typearea").value
@@ -559,7 +551,7 @@ window.processEssay = processEssay;
 
 $scope.search = function(){
 	$http({
-	  url: 'http://localhost:3001/secured/searchFTArticles',
+	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/searchFTArticles',
 	  method: 'GET',
 	  params: {
 		search: document.getElementById("search").value
@@ -699,7 +691,62 @@ $scope.createBib = function(article) {
 
 		deleteButton.onclick = function() {
 			biblio.removeChild(content);
+
+			var info = document.getElementById("infoarea");
+			var text = (info.innerHTML);
 			document.getElementById("infoarea").innerHTML = "";
+
+
+			$http({
+					  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkArticleFree',
+					  method: 'GET',
+					  params: {
+						url_to_check: article["url"]
+					  }
+					}).then(function(response) {
+		
+
+						var test = document.createElement("div");
+
+						var container = document.createElement("div");
+						window.response = response;
+						for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
+
+							var strArray = response["data"]["result"]["text"][i].split(" ");
+
+							for (var j = 0; j < strArray.length; j++) {
+								var word =  document.createElement("span");
+
+								word.innerHTML = strArray[j];
+								container.appendChild(word);
+								
+								//Append space element
+								var space =  document.createElement("span");
+								space.innerHTML = " ";
+								container.appendChild(space);
+							}
+						}
+
+						test.appendChild(container);
+						
+
+						if (test.innerHTML == text) {
+							console.log("hit");
+							document.getElementById("infoarea").innerHTML =' ';
+							
+						}
+
+
+					}); // end of http get
+
+
+
+
+
+
+
+
+			
 
 
 		}
@@ -743,17 +790,19 @@ $scope.saveEssay = function() {
 		sources.push(citations[i].innerHTML);
 	}
 
+    console.log(document.getElementById("infoarea").innerHTML);
 
 
     var essayinfo = JSON.stringify({
         user_id:id, 
         essay: essay,
-        bib: sources
+        bib: sources,
+        infoarea: document.getElementById("infoarea").innerHTML
     });
 
 
 
-	$http.post('http://localhost:3001/secured/account/id/essay', {data: essayinfo}, { 
+	$http.post('http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/account/id/essay', {data: essayinfo}, { 
 	    headers: {
 	    'Accept' : '*/*',
 	    'Content-Type': 'application/json'

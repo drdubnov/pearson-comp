@@ -7,7 +7,8 @@ var User = new Schema({
 	nickname: String,
 	email: String,
 	essay: String,
-	bib : [String]
+	bib : [String],
+	infoarea: String
 
 	
 });
