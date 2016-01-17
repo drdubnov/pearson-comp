@@ -81,6 +81,56 @@ angular.module( 'Pearson.home', [
 
 				$(deleteButton).click(function(c) {
 				  $(this).parent().parent().remove();
+				  var firstcol = $(this).parent().parent().children()[0];
+				  var url = $(firstcol).children()[0].id;
+
+
+				  $http({
+					  url: 'http://localhost:3001/secured/checkArticleFree',
+					  method: 'GET',
+					  params: {
+						url_to_check: url
+					  }
+					}).then(function(response) {
+		
+
+						var test = document.createElement("div");
+						var container = document.createElement("div");
+						window.response = response;
+						for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
+
+							var strArray = response["data"]["result"]["text"][i].split(" ");
+
+							for (var j = 0; j < strArray.length; j++) {
+								var word =  document.createElement("span");
+
+								word.innerHTML = strArray[j];
+
+
+
+								word.onclick = function() {
+									var results = $scope.findMeaning(this.innerHTML);
+									
+								}
+
+
+								container.appendChild(word);
+								
+								//Append space element
+								var space =  document.createElement("span");
+								space.innerHTML = " ";
+								container.appendChild(space);
+							}
+						}
+
+						test.appendChild(container);
+						if (test.innerHTML == document.getElementById("infoarea").innerHTML) {
+		
+							document.getElementById("infoarea").innerHTML = "";
+						}
+
+
+					}); // end of http get
 				   
 				});
 				$(firstcol).click(function(c) {
@@ -249,7 +299,7 @@ angular.module( 'Pearson.home', [
 
 		window.objectX = response;
 		//window.objectX["data"]["result"]["text"][1]
-		return response;
+		return document.getElementById("infoarea").innerHTML;
 	}); // end of http get
   }
   
