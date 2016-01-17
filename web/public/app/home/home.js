@@ -10,6 +10,7 @@ angular.module( 'Pearson.home', [
   var deferred = $q.defer();
 
   var lastread;
+  var current_search;
 
 
   $scope.scrollDown = function() {
@@ -24,13 +25,18 @@ angular.module( 'Pearson.home', [
 		user_id: auth.profile["identities"][0]["user_id"]
 	  }
 	}).success(function(data, status, headers, config) {
+        console.log(data);
 	   var text = document.getElementById("typearea");
 		text.value = data["user"]["essay"];
 
 
         if (data["user"]["last_readinfo"] != "") {
             $scope.pullArticleContents(data["user"]["last_readinfo"]);
-            //document.getElementById("infoarea").innerHTML = data["user"]["infoarea"];
+        }
+
+        if (data["user"]["searched_info"] != "") {
+            document.getElementById("search").value = data["user"]["searched_info"];
+            $scope.search();
         }
         
 
@@ -65,6 +71,10 @@ angular.module( 'Pearson.home', [
 
 				firstcol.innerHTML = data.promise[i];
 
+
+               
+
+
 				$(firstcol).hover(	
 			       function () {
 			          $(this).css({"color":"red"});
@@ -80,6 +90,21 @@ angular.module( 'Pearson.home', [
 				secondcol.className = "col-md-4";
 				deleteButton = document.createElement("button");
 				deleteButton.innerHTML = "X";
+                deleteButton.id = "delete" + i;
+                deleteButton.style.visibility = "hidden";
+
+                $(content).hover(  
+                    function () {
+                        var correctrow = ($(this).children().context.id.substring(7));
+                        var correctbutton = document.getElementById("delete" + correctrow);
+                        correctbutton.style.visibility = "visible";
+                   },    
+                   function () {
+                      var correctrow = ($(this).children().context.id.substring(7));
+                        var correctbutton = document.getElementById("delete" + correctrow);
+                        correctbutton.style.visibility = "hidden";
+                   }
+                );
 
 
 				
@@ -89,6 +114,10 @@ angular.module( 'Pearson.home', [
 				content.appendChild(secondcol);
 				biblio.appendChild(content);
 
+
+
+
+
 				$(deleteButton).click(function(c) {
 				  $(this).parent().parent().remove();
 				  var firstcol = $(this).parent().parent().children()[0];
@@ -96,7 +125,7 @@ angular.module( 'Pearson.home', [
 
 
 				  $http({
-					  url: 'http://localhost:3001/secured/checkArticleFree',
+					  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkArticleFree',
 					  method: 'GET',
 					  params: {
 						url_to_check: url
@@ -318,6 +347,7 @@ angular.module( 'Pearson.home', [
 $('#search').on("keypress", function(e) {
         if (e.keyCode == 13) {
 			$scope.search();
+            current_search = document.getElementById("search").value;
             return false; // prevent the button click from happening
         }
 });
@@ -701,7 +731,18 @@ $scope.createBib = function(article) {
 	var secondcol = document.createElement("div");
 	secondcol.className = "col-md-4";
 		var deleteButton = document.createElement("button");
-		deleteButton.innerHTML = "X";
+        deleteButton.innerHTML = "X";
+		deleteButton.id = "delete";
+        deleteButton.style.visibility = "hidden";
+
+        $(content).hover(  
+            function () {
+                deleteButton.style.visibility = "visible";
+           },    
+           function () {
+                deleteButton.style.visibility = "hidden";
+           }
+        );
 
 		deleteButton.onclick = function() {
 			biblio.removeChild(content);
@@ -709,60 +750,6 @@ $scope.createBib = function(article) {
 			var info = document.getElementById("infoarea");
 			var text = (info.innerHTML);
 			document.getElementById("infoarea").innerHTML = "";
-
-
-			$http({
-					  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkArticleFree',
-					  method: 'GET',
-					  params: {
-						url_to_check: article["url"]
-					  }
-					}).then(function(response) {
-		
-
-						var test = document.createElement("div");
-
-						var container = document.createElement("div");
-						window.response = response;
-						for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
-
-							var strArray = response["data"]["result"]["text"][i].split(" ");
-
-							for (var j = 0; j < strArray.length; j++) {
-								var word =  document.createElement("span");
-
-								word.innerHTML = strArray[j];
-								container.appendChild(word);
-								
-								//Append space element
-								var space =  document.createElement("span");
-								space.innerHTML = " ";
-								container.appendChild(space);
-							}
-						}
-
-						test.appendChild(container);
-						
-
-						if (test.innerHTML == text) {
-							console.log("hit");
-							document.getElementById("infoarea").innerHTML =' ';
-							
-						}
-
-
-					}); // end of http get
-
-
-
-
-
-
-
-
-			
-
-
 		}
 
 
@@ -812,7 +799,8 @@ $scope.saveEssay = function() {
         user_id:id, 
         essay: essay,
         bib: sources,
-        last_readinfo: lastread
+        last_readinfo: lastread,
+        searched_info: current_search
     });
 
 

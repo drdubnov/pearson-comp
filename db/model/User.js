@@ -8,7 +8,8 @@ var User = new Schema({
 	email: String,
 	essay: String,
 	bib : [String],
-	last_readinfo : String
+	last_readinfo : String,
+	searched_info: String,
 
 	
 });

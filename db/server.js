@@ -49,21 +49,21 @@ var router = express.Router();
 
 
 
-// User.find({  }, function(err, user) {
-//       if (err) {
-//       	throw err;
-//       }
+User.find({  }, function(err, user) {
+      if (err) {
+      	throw err;
+      }
 
-//       console.log("delete");
-//         // delete him
-//       User.remove(function(err) {
-//       if (err) {
-//            throw err;
-//       }
-//       console.log('User successfully deleted!');
+      console.log("delete");
+        // delete him
+      User.remove(function(err) {
+      if (err) {
+           throw err;
+      }
+      console.log('User successfully deleted!');
 
-//       });
-// });
+      });
+});
 
 
 
@@ -86,7 +86,8 @@ router.post('/api/accounts', function (req, res, next) {
 		    email: req.body.email,
 		    essay: "",
 		    bib: "",
-		    last_readinfo: ""
+		    last_readinfo: "",
+		    searched_info: ""
 
 	      });
 
@@ -123,6 +124,7 @@ router.post('/api/accounts/id/essay', function (req, res, next) {
 	      userObj.essay = req.body.essay;
 	      userObj.bib = req.body.bib;
 	      userObj.last_readinfo = req.body.last_readinfo;
+	      userObj.searched_info = req.body.searched_info;
 
 
 	      userObj.save(function(err) {
