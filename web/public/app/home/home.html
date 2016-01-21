@@ -2,14 +2,12 @@
 
 <nav class="navbar navbar-default">
   <div class="row">
-    <div class="col-md-4" style = "text-align:center">
-      <input id="search" type="text" name="search" placeholder="Press Enter to Search for Article" ng-model="search" ng-change="searchInfo()">
+  
+    <div class="col-md-6" style="margin: 0 auto;">
+      <h1 id="title" style="text-align:center;margin-left:800px">Mint</h1>
     </div>
-    <div class="col-md-4">
-      <h1 id="title">Mint</h1>
-    </div>
-    <div class="col-md-4" style = "text-align:center">
-      <button class="logout" ng-click = "logout()"><h5>Logout {{nickname}}</h5></button>
+    <div  style = "text-align:center;">
+      <button class="pure-button logout" style="float:right;margin-right:50px" ng-click = "logout()"><h5>Logout {{nickname}}</h5></button>
     </div>
   </div>
 </nav>
@@ -22,14 +20,13 @@
     
     <div class = "row">
       <textarea id="typearea" placeholder="Enter Your Essay Content Here" ></textarea>
-      <div id="infoarea"></div>
     </div>
 
     <div class = "row">
-      <button class="mint-button" id="copyButton"><h4>Copy Text to Clipboard</h4></button>
-      <button class="mint-button" onclick="showResults()"><h4>Analyze</h4></button>
-      <button class="mint-button" ng-click="saveEssay()"><h4>Save Work</h4></button>
-      <button class="mint-button" ng-click="scrollDown()"><h4>Works Cited</h4></button>
+      <button class="pure-button mint-button" id="copyButton"><h4>Copy Text to Clipboard</h4></button>
+      <button class="pure-button mint-button" onclick="showResults()"><h4>Analyze</h4></button>
+      <button class="pure-button mint-button" ng-click="saveEssay()"><h4>Save Work</h4></button>
+      <button class="pure-button mint-button" ng-click="scrollDown()"><h4>Works Cited</h4></button>
       <div>
         <button class="mint-button" onclick="toggleStatus()" id="toggleButton" style="visibility:hidden;float:right;margin-top:-40px;margin-left:5px"><h4>Scroll through Definition</h4></button>
         <label style="float:left" id="statusbar">Definition</label>
@@ -38,12 +35,24 @@
   </div>
 
 
+
   <div class="results">
+
+	 
     <div class = "row">
-      <h4>Results Section:</h4>
-      <div class="wiki-result">
-          <h5 id="results" align="center" style="margin-top:0%">No result yet</h5>
-      </div>
+	<div>
+	 <div class="search" method="post" action="index.html" style="width:100%">
+		 <input  id="search" autocomplete="off" style="padding-left:55px;margin-top:-10px;width:96%;border-radius:20px"  type="text" name="q" placeholder="Search..."  ng-model="search" ng-change="searchInfo()"/>
+		 <ul class="results" style="width:100%" id="results">
+		 </ul>
+	 </div>
+	</div>
+	
+	<div id="searchTitleInfo" style="font-size:15px;width:100%;text-align:center;font-weight:bold"></div>
+	<div class="wiki-result">
+	  <div id="infoarea" style="width:100%;"></div>
+	</div>
+	<input id="summarizeObj" type="checkbox" name="summarize" value="yes" style="font-size:20px" checked> Summarize Articles
     </div>  
   </div>
 

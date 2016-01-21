@@ -2,7 +2,17 @@ angular.module( 'Pearson.home', [
 'auth0'
 ])
 .controller( 'HomeCtrl', function HomeController( $scope, auth, $http, $location, store, $q ) {
-
+  document.getElementById("typearea").onfocus = function(){
+	document.getElementById("typearea").style["backgroundColor"] = '#e5fff3';
+	document.getElementById("typearea").style["outline"] = "1px solid orange";
+  }
+  
+  document.getElementById("typearea").onblur = function(){
+	document.getElementById("typearea").style["backgroundColor"] = 'white';
+	document.getElementById("typearea").style["outline"] = "";
+  }
+  
+  
   $scope.auth = auth;
   $scope.nickname = auth["profile"]["name"];
 
@@ -204,6 +214,8 @@ angular.module( 'Pearson.home', [
 	// });
 
   $scope.findMeaning = function(word) {
+	  //Remove all punctuation
+	 word = word.match(/[^_\W]+/g).join(' ');
   	 $http({
 	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkDefinition',
 	  method: 'GET',
@@ -213,10 +225,23 @@ angular.module( 'Pearson.home', [
 	}).then(function(response) {
 		var definitions = [];
 		for (var i =0;i< response["data"]["results"].length;i++){
-			window.objx = response["data"]["results"][i];
 			if (response["data"]["results"][i]["senses"] != null && response["data"]["results"][i]["senses"][0] != null){
 				if (response["data"]["results"][i]["senses"][0]["definition"] != null){
-					definitions.push(response["data"]["results"][i]["senses"][0]["definition"]);
+					//Check if there exists translations for the word. If so, it's unlikely to be an English word.
+					if (response["data"]["results"][i]["senses"][0]["translations"] == null){
+						
+						//Prevent duplicates by comparing to everything already pushed
+						var duplicate = false;
+						for (var vx =0;vx<definitions.length;vx++){
+							if (definitions[vx] == response["data"]["results"][i]["senses"][0]["definition"]){
+								duplicate = true;
+							}
+						}
+						
+						if (duplicate == false){
+							definitions.push(response["data"]["results"][i]["senses"][0]["definition"]);
+						}
+					}
 				}
 			}
 		}
@@ -279,15 +304,32 @@ angular.module( 'Pearson.home', [
 		url_to_check: pearson_article_url
 	  }
 	}).then(function(response) {
+		document.getElementById("searchTitleInfo").innerHTML = response["data"]["result"]["headline"];
+
 		document.getElementById("infoarea").innerHTML = "";
 
 		var info = document.getElementById("infoarea");
 
 		var container = document.createElement("div");
 		window.response = response;
+		
+		var passage = "";
+		var strData = "";
+		
 		for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
+			strData += response["data"]["result"]["text"][i] + " ";
+		}
+			
+		//for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
 
-			var strArray = response["data"]["result"]["text"][i].split(" ");
+			//var strData = response["data"]["result"]["text"][i];
+			
+			//Summarize the textual data!
+			if (document.getElementById("summarizeObj").checked){
+				strData = window.summarizeData(strData);
+			}
+		
+			var strArray = strData.split(" ");
 
 			for (var j = 0; j < strArray.length; j++) {
 				var word =  document.createElement("span");
@@ -330,7 +372,7 @@ angular.module( 'Pearson.home', [
 		
 
 			// document.getElementById("infoarea").innerHTML += response["data"]["result"]["text"][i];
-		}
+		//}
 
 		info.appendChild(container);
 
@@ -437,11 +479,11 @@ function topFiveNGrams(){
 		essay: document.getElementById("typearea").value
 	  }
 	}).then(function(response) {
-		results = processEssay();
-		bestSubject = results[0];
-		averageFreq = results[1];
-		avgSentenceLength = results[2];
-		avgSentenceVariance = results[3];
+		resultsData = processEssay();
+		bestSubject = resultsData[0];
+		averageFreq = resultsData[1];
+		avgSentenceLength = resultsData[2];
+		avgSentenceVariance = resultsData[3];
 		
 		Info1 = "<strong>Basic Text Information</strong> <br>" + 
 		"Predicted topic - " + bestSubject + "<br>" +
@@ -606,25 +648,60 @@ $scope.searchInfo = function(){
 		search: document.getElementById("search").value
 	  }
 	}).then(function(response) {
+		//If no results.. don't update anything.
+		if (response["data"]["articles"]["count"] == 0){
+			return;
+		}
+		
 		results = $scope.removeDuplicates(response);
 		document.getElementById("results").innerHTML = (response["data"]["articles"]["count"] == 0) ? "No results yet" : "";
 
+		//Limit to 10 results
+		if (results.length > 10){
+			results = results.slice(0,10);
+		}
+		
 		for (var i =0;i<results.length;i++){
 			
 			var new_link = document.createElement("a");
-			new_link.id = i;
-			new_link.onclick = function() {
-				var index = this.id;
+			new_link.id = "nl" + i;
+			
+			var outerLI = document.createElement("li");
+			outerLI.appendChild(new_link);
+			outerLI.id = "ol" + i;
+			outerLI.headline = results[i]["headline"];
+			
+			outerLI.onmousedown = function() {
+				var index = this.id.slice(2);
 				$scope.grabText(results[index]["url"]);
                 lastread = results[index]["url"];
 				$scope.createBib(results[index]);
 
-
+				document.getElementById("searchTitleInfo").innerHTML = this.headline;
 			}
-			new_link.innerHTML = results[i]["headline"];
-			document.getElementById("results").appendChild(new_link);
-			document.getElementById("results").appendChild(document.createElement("br"));
-				document.getElementById("results").appendChild(document.createElement("br"));
+			
+			/*outerLI.onmouseover = function(){
+				document.getElementById("nl" + this.id[2]).style["font-weight"] = "bolder";
+			}
+			
+			outerLI.onmouseout = function(){
+				document.getElementById("nl" + this.id[2]).style["font-weight"] = "normal";
+			}*/
+			
+			//<li><a href="index.html">Search Result #1<br /><span>Description...</span></a></li>
+			
+			
+			
+			//Larger font size
+			new_link.style["font-size"] = "20px";
+			new_link.style["text-decoration"] = "none";
+			new_link.style["cursor"] = "pointer";
+			
+			var description = "";//"<br /><span>Description...</span>";
+			
+			new_link.innerHTML = results[i]["headline"] + description;
+			
+			document.getElementById("results").appendChild(outerLI);
 
 		}
 
