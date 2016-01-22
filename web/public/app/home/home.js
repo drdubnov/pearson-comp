@@ -509,28 +509,6 @@ window.showResults = function(){
 	$('#myModal').modal('show');
 }
 
-//Helps Highlight N-Gram matches
-function doSearch(text) {
-    if (window.find && window.getSelection) {
-        document.designMode = "on";
-        var sel = window.getSelection();
-        sel.collapse(document.body, 0);
-        
-        while (window.find(text)) {
-            document.getElementById("button").blur();
-            document.execCommand("HiliteColor", false, "yellow");
-            sel.collapseToEnd();
-        }
-        document.designMode = "off";
-    } else if (document.body.createTextRange) {
-        var textRange = document.body.createTextRange();
-        while (textRange.findText(text)) {
-            textRange.execCommand("BackColor", false, "yellow");
-            textRange.collapse(false);
-        }
-    }
-}
-
 //Function to return the top 5 most common N-Grams
 function topFiveNGrams(){
 	document.getElementById("pbar").style.visibility = "visible";
@@ -567,9 +545,10 @@ function topFiveNGrams(){
 		}
 		
 		//Highlight all matches!
-		select.onchange = function(){
-			doSearch(this.options[this.selectedIndex].text);
-		}
+		//.... To Do ....
+		//.... To Do ....
+		//.... To Do ....
+		
 		
 		//Multiview Selecter
 		selecter["multiple"] = true;
