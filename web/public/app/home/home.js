@@ -509,6 +509,28 @@ window.showResults = function(){
 	$('#myModal').modal('show');
 }
 
+//Helps Highlight N-Gram matches
+function doSearch(text) {
+    if (window.find && window.getSelection) {
+        document.designMode = "on";
+        var sel = window.getSelection();
+        sel.collapse(document.body, 0);
+        
+        while (window.find(text)) {
+            document.getElementById("button").blur();
+            document.execCommand("HiliteColor", false, "yellow");
+            sel.collapseToEnd();
+        }
+        document.designMode = "off";
+    } else if (document.body.createTextRange) {
+        var textRange = document.body.createTextRange();
+        while (textRange.findText(text)) {
+            textRange.execCommand("BackColor", false, "yellow");
+            textRange.collapse(false);
+        }
+    }
+}
+
 //Function to return the top 5 most common N-Grams
 function topFiveNGrams(){
 	document.getElementById("pbar").style.visibility = "visible";
@@ -532,7 +554,30 @@ function topFiveNGrams(){
 		"Average Sentence Length - " +  Math.round(avgSentenceLength) + "<br>" +
 		"Sentence Length Standard Dev. - " + Math.round(Math.sqrt(avgSentenceVariance)) + "<br><br>";
 		
-		document.getElementById("resultsParagraph").innerHTML = Info1 + "<strong>Common Phrases and Frequency</strong> <br> " + response["data"]["top5"].join("<br>");
+		//Increase font size!
+		document.getElementById("resultsParagraph").style["font-size"] = "20px";
+		
+		//Create the Select List of N-Gram information
+		var selecter = document.createElement("select");
+		for (var i = 0;i < response["data"]["top5"].length;i++){
+			var obj = document.createElement("option");
+			obj.text = response["data"]["top5"][i];
+			obj.style["font-size"] = "22px";
+			selecter.add(obj);
+		}
+		
+		//Highlight all matches!
+		select.onchange = function(){
+			doSearch(this.options[this.selectedIndex].text);
+		}
+		
+		//Multiview Selecter
+		selecter["multiple"] = true;
+		selecter.style["width"] = "100%";
+		
+		//Add elements to resultsParagraph
+		document.getElementById("resultsParagraph").innerHTML += Info1 + "<strong>Common Phrases and Frequency</strong> <br> ";
+		document.getElementById("resultsParagraph").appendChild(selecter);
 	
 		//Hide Progressbar
 		document.getElementById("pbar").style.visibility = "hidden";

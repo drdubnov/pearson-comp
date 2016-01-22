@@ -233,7 +233,7 @@ app.get('/secured/commonPhrases', function(req, res) {
 		}
 		
 		//Push to our most common list
-		mostCommon.push("Phrase: " + bestWord + " - Number of Occurances: " + bestFreq);
+		mostCommon.push('"' + bestWord + "'" + " occurs " + bestFreq + " time(s)");
 		
 		//Remove from future choices (so it doesn't get chosen again)
 		counts[bestWord] = 0;

@@ -9,6 +9,8 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: 'Roboto', sans-serif;
 }
 
+.highlight { background-color: yellow }
+
 .navbar {
     -webkit-box-shadow: 0 8px 6px -6px #ffdd00
     -moz-box-shadow: 0 8px 6px -6px #ffdd00;
