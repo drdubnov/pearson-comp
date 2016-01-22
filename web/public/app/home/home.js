@@ -521,10 +521,10 @@ function topFiveNGrams(){
 	  }
 	}).then(function(response) {
 		resultsData = processEssay();
-		bestSubject = resultsData[0];
-		averageFreq = resultsData[1];
-		avgSentenceLength = resultsData[2];
-		avgSentenceVariance = resultsData[3];
+		bestSubject = resultsData[0] ? resultsData[0] != NaN : "Not enough information"
+		averageFreq = resultsData[1] ? resultsData[1] != NaN : "Not enough information";
+		avgSentenceLength = resultsData[2] ? resultsData[2] != NaN : "Not enough information";
+		avgSentenceVariance = resultsData[3] ? resultsData[3] != NaN : "Not enough information";
 		
 		Info1 = "<strong>Basic Text Information</strong> <br>" + 
 		"Predicted topic - " + bestSubject + "<br>" +
@@ -598,14 +598,6 @@ function processEssay() {
 			averageFreq +=parseInt(rankOfWords[key][3])
 			
 			totalFreq = parseFloat(rankOfWords[key][3]);
-			
-			//Compute the likelihood
-			/*subjectProbabilities['spoken'] *= parseFloat(rankOfWords[key][4])/totalFreq;
-			subjectProbabilities['fiction'] *= parseFloat(rankOfWords[key][5])/totalFreq;
-			subjectProbabilities['magazine'] *= parseFloat(rankOfWords[key][6])/totalFreq;
-			subjectProbabilities['newspaper'] *= parseFloat(rankOfWords[key][7])/totalFreq;
-			subjectProbabilities['academic'] *= parseFloat(rankOfWords[key][8])/totalFreq;*/
-			
 			
 			//Compute the log likelihood instead (better precision)!
 			subjectProbabilities['spoken'] += Math.log10(parseFloat(rankOfWords[key][4])/totalFreq);
