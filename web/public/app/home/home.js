@@ -297,6 +297,57 @@ angular.module( 'Pearson.home', [
 	  
 	  return output;
   }
+  
+  document.getElementById("summarizeObj").onclick = function(){
+		//Can't summarize an empty article
+		if (window.articleSummarized == null || window.articleText == null){
+			return;
+		}
+		
+		document.getElementById("infoarea").innerHTML = "";
+
+		var info = document.getElementById("infoarea");
+		var container = document.createElement("div");
+		
+		//Summarize the textual data!
+		if (document.getElementById("summarizeObj").checked){
+			strData = window.articleSummarized;
+		}
+		else{
+			strData = window.articleText;
+		}
+	
+		var strArray = strData.split(" ");
+		
+		for (var j = 0; j < strArray.length; j++) {
+			var word =  document.createElement("span");
+			word.innerHTML = strArray[j];
+			word.onclick = function() {
+				var results = $scope.findMeaning(this.innerHTML);
+			}
+
+			$(word).hover(
+			
+			   function () {
+				  $(this).css({"color":"red"});
+			   }, 
+				
+			   function () {
+				  $(this).css({"color":"black"});
+			   }
+			);
+			
+			container.appendChild(word);
+			
+			//Append space element
+			var space =  document.createElement("span");
+			space.innerHTML = " ";
+			container.appendChild(space);
+
+		}
+
+		info.appendChild(container);
+  }
    
   //Run article through Pearson API to retrieve data
   $scope.pullArticleContents = function(pearson_article_url){
@@ -319,72 +370,57 @@ angular.module( 'Pearson.home', [
 		window.response = response;
 		
 		var passage = "";
-		var strData = "";
+		var strDataNormal = "";
 		
 		for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
-			strData += response["data"]["result"]["text"][i] + " ";
+			strDataNormal += response["data"]["result"]["text"][i] + " ";
 		}
 			
-		//for (var i = 0; i < response["data"]["result"]["text"].length; i++) {
-
-			//var strData = response["data"]["result"]["text"][i];
-			
-			//Summarize the textual data!
-			if (document.getElementById("summarizeObj").checked){
-				strData = window.summarizeData(strData);
-			}
+		strDataSummarized = window.summarizeData(strDataNormal);
 		
-			var strArray = strData.split(" ");
-
-			for (var j = 0; j < strArray.length; j++) {
-				var word =  document.createElement("span");
-
-				word.innerHTML = strArray[j];
-
-
-
-				word.onclick = function() {
-					var results = $scope.findMeaning(this.innerHTML);
-					
-				}
-
-			
-
-				$(word).hover(
-				
-	               function () {
-	                  $(this).css({"color":"red"});
-	               }, 
-					
-	               function () {
-	                  $(this).css({"color":"black"});
-	               }
-	            );
-
-
-
-				container.appendChild(word);
-				
-				//Append space element
-				var space =  document.createElement("span");
-				space.innerHTML = " ";
-				container.appendChild(space);
-				
-				
-
+		//Summarize the textual data!
+		if (document.getElementById("summarizeObj").checked){
+			strData = strDataSummarized;
+		}
+		else{
+			strData = strDataNormal;
+		}
+	
+		var strArray = strData.split(" ");
+		
+		window.articleSummarized = strDataSummarized;
+		window.articleText = strDataNormal;
+		
+		for (var j = 0; j < strArray.length; j++) {
+			var word =  document.createElement("span");
+			word.innerHTML = strArray[j];
+			word.onclick = function() {
+				var results = $scope.findMeaning(this.innerHTML);
 			}
 
-		
+			$(word).hover(
+			
+			   function () {
+				  $(this).css({"color":"red"});
+			   }, 
+				
+			   function () {
+				  $(this).css({"color":"black"});
+			   }
+			);
+			
+			container.appendChild(word);
+			
+			//Append space element
+			var space =  document.createElement("span");
+			space.innerHTML = " ";
+			container.appendChild(space);
 
-			// document.getElementById("infoarea").innerHTML += response["data"]["result"]["text"][i];
-		//}
+		}
 
 		info.appendChild(container);
 
-
-
 		window.objectX = response;
-		//window.objectX["data"]["result"]["text"][1]
 		return response
 		
 	}); // end of http get
