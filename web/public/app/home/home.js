@@ -246,7 +246,12 @@ angular.module( 'Pearson.home', [
 			}
 		}
 		
-		document.getElementById("statusbar").innerHTML = "Definition of '" + word + "' : " + definitions[0];
+		if (definitions[0] == null){
+			document.getElementById("statusbar").innerHTML = "Definition of '" + word + "' : <No definition found>";
+		}
+		else{
+			document.getElementById("statusbar").innerHTML = "Definition of '" + word + "' : " + definitions[0];
+		}
 		console.log(response["data"]);
 		
 		window.definitionNum = 0;
