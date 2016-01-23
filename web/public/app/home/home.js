@@ -521,10 +521,10 @@ function topFiveNGrams(){
 	  }
 	}).then(function(response) {
 		resultsData = processEssay();
-		bestSubject = resultsData[0] != NaN ? resultsData[0] : "Not enough information"
-		averageFreq = resultsData[1] != NaN ? resultsData[1] : "Not enough information";
-		avgSentenceLength = resultsData[2] != NaN ? resultsData[2] : "Not enough information";
-		avgSentenceVariance =resultsData[3] != NaN ?  resultsData[3]  : "Not enough information";
+		bestSubject = !isNaN(resultsData[0]) ? resultsData[0] : "Not enough information"
+		averageFreq = !isNaN(resultsData[1]) ? resultsData[1] : "Not enough information";
+		avgSentenceLength = !isNaN(resultsData[2]) ? resultsData[2] : "Not enough information";
+		avgSentenceVariance = !isNaN(resultsData[3]) ?  resultsData[3]  : "Not enough information";
 		
 		Info1 = "<strong>Basic Text Information</strong> <br>" + 
 		"Predicted topic - " + bestSubject + "<br>" +
