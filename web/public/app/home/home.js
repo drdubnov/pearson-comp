@@ -529,8 +529,7 @@ function topFiveNGrams(){
 		Info1 = "<strong>Basic Text Information</strong> <br>" + 
 		"Predicted topic - " + bestSubject + "<br>" +
 		"Word Uniqueness Score - " + averageFreq + "<br>" +
-		"Average Sentence Length - " +  Math.round(avgSentenceLength) + "<br>" +
-		"Sentence Length Variance - " + avgSentenceDeviation + "<br><br>";
+		"Sentence Length Deviation -" + Math.round(avgSentenceLength) + " (+/-)" + avgSentenceDeviation + " words<br><br>";
 		
 		//Increase font size!
 		document.getElementById("resultsParagraph").style["font-size"] = "20px";
@@ -555,7 +554,7 @@ function topFiveNGrams(){
 		selecter.style["width"] = "100%";
 		
 		//Add elements to resultsParagraph
-		document.getElementById("resultsParagraph").innerHTML += Info1 + "<strong>Common Phrases and Frequency</strong> <br> ";
+		document.getElementById("resultsParagraph").innerHTML += Info1 + "<strong>Common Phrases and Frequency (word groups of 3 or more) </strong> <br> ";
 		document.getElementById("resultsParagraph").appendChild(selecter);
 	
 		//Hide Progressbar
