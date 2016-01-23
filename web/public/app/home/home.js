@@ -540,7 +540,7 @@ function topFiveNGrams(){
 		for (var i = 0;i < response["data"]["top5"].length;i++){
 			var obj = document.createElement("option");
 			obj.text = response["data"]["top5"][i];
-			obj.style["font-size"] = "22px";
+			obj.style["font-size"] = "16px";
 			selecter.add(obj);
 		}
 		
