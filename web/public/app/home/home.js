@@ -521,16 +521,16 @@ function topFiveNGrams(){
 	  }
 	}).then(function(response) {
 		resultsData = processEssay();
-		bestSubject = !isNaN(resultsData[0]) ? resultsData[0] : "Not enough information"
+		bestSubject = resultsData[0];
 		averageFreq = !isNaN(resultsData[1]) ? resultsData[1] : "Not enough information";
 		avgSentenceLength = !isNaN(resultsData[2]) ? resultsData[2] : "Not enough information";
-		avgSentenceVariance = !isNaN(resultsData[3]) ?  resultsData[3]  : "Not enough information";
+		avgSentenceDeviation = !isNaN(Math.round(Math.sqrt(resultsData[3]))) ? resultsData[3] : "Not enough sentences";
 		
 		Info1 = "<strong>Basic Text Information</strong> <br>" + 
 		"Predicted topic - " + bestSubject + "<br>" +
 		"Word Uniqueness Score - " + averageFreq + "<br>" +
 		"Average Sentence Length - " +  Math.round(avgSentenceLength) + "<br>" +
-		"Sentence Length Standard Dev. - " + Math.round(Math.sqrt(avgSentenceVariance)) + "<br><br>";
+		"Sentence Length Variance - " + avgSentenceDeviation + "<br><br>";
 		
 		//Increase font size!
 		document.getElementById("resultsParagraph").style["font-size"] = "20px";
