@@ -2,6 +2,7 @@
 body {
 	background-color: #0076C0;
 	overflow: scroll;
+    overflow-x: hidden;
 }
 
 
@@ -11,12 +12,17 @@ h1, h2, h3, h4, h5, h6 {
 
 .highlight { background-color: yellow }
 
+.row {
+    margin: 0;
+}
+
 .navbar {
-    -webkit-box-shadow: 0 8px 6px -6px #ffdd00
-    -moz-box-shadow: 0 8px 6px -6px #ffdd00;
-    box-shadow: 0 8px 6px -6px #ffdd00;
+    -webkit-box-shadow: 0 0px 6px 2px #ffdd00;
+    -moz-box-shadow: 0 0px 6px 2px #ffdd00;
+    box-shadow: 0 0px 6px 2px #ffdd00;
     background-color: #21358b;
     border: none;
+    border-radius: 0;
 }
 
 .navbar h1 {
@@ -31,15 +37,15 @@ h1, h2, h3, h4, h5, h6 {
 .content {
 	position: absolute;
 	background-color: white;
-/*	margin: 100px 25px;*/
+    /*	margin: 100px 25px;*/
 	float: left;
-	width: 70%;
+	width: 68%;
 	height: 700px;
 	padding: 2% 50px;
 	font-size: 20px;
 	
 	margin-left:20px;
-    border-radius: 15px 50px;
+    border-radius: 20px;
 }
 
 #typearea {
@@ -69,12 +75,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #infoarea {
-	height: 560px;
+	height: 500px;
 	resize: none;
 	float:right;
 	overflow-y: scroll;
 	border: 1px solid white;
-	
 	background-color: white;
 	font-size: 20px;
 	border-radius:5px;
@@ -90,7 +95,7 @@ h1, h2, h3, h4, h5, h6 {
 	/*overflow-y: scroll;*/
 	
 	
-    border-radius: 25px;
+    border-radius: 20px;
     border: 2px solid #73AD21;
 	margin:0 20px 0 0;
 }
@@ -124,7 +129,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #title {
-	margin: 20px 0;
+	margin: 20px 20px;
 	text-align: center;
 }
 
@@ -324,3 +329,7 @@ input {
 }
 
 .lt-ie9 .search input { line-height: 26px }
+
+.push-button:hover {
+    box-shadow: 0px 3px 15px black;
+}
