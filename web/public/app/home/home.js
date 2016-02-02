@@ -28,9 +28,10 @@ angular.module( 'Pearson.home', [
 
 
   $scope.scrollDown = function() {
-    var height = Math.max( body.scrollHeight, body.offsetHeight, 
+	$('#myModal2').modal('show');
+    /*var height = Math.max( body.scrollHeight, body.offsetHeight, 
                        html.clientHeight, html.scrollHeight, html.offsetHeight );
-  	window.scrollBy(0, height);
+  	window.scrollBy(0, height);*/
   }
 
 
@@ -508,6 +509,7 @@ window.showResults = function(){
 	window.topFiveNGrams();
 	$('#myModal').modal('show');
 }
+
 
 //Function to return the top 5 most common N-Grams
 function topFiveNGrams(){
