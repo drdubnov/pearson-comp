@@ -40,7 +40,7 @@ app.get('/secured/ping', function(req, res) {
 // adding a new account
 app.post('/secured/account', function(req, res) {
   request({
-    url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3005/api/accounts/', //URL to hit
+    url: 'http://ec2-54-149-166-225.us-west-2.compute.amazonaws.com:3005/api/accounts/', //URL to hit
     method: 'POST', //Specify the method
     headers: {
       'Content-Type': 'application/json'
@@ -62,7 +62,7 @@ app.post('/secured/account', function(req, res) {
 app.post('/secured/account/id/essay', function(req, res) {
   console.log("save");
   request({
-    url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3005/api/accounts/id/essay', //URL to hit
+    url: 'http://ec2-54-149-166-225.us-west-2.compute.amazonaws.com:3005/api/accounts/id/essay', //URL to hit
     method: 'POST', //Specify the method
     headers: {
       'Content-Type': 'application/json'
@@ -84,7 +84,7 @@ app.post('/secured/account/id/essay', function(req, res) {
 app.get('/secured/account/id/essay', function(req, res) {
   console.log(req.query["user_id"]);
   request({
-      url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3005/api/accounts/id/essay', //URL to hit
+      url: 'http://ec2-54-149-166-225.us-west-2.compute.amazonaws.com:3005/api/accounts/id/essay', //URL to hit
       headers: {
         'Content-Type': 'application/json'
       },
@@ -253,5 +253,5 @@ app.get('/secured/commonPhrases', function(req, res) {
 var port = process.env.PORT || 3001;
 
 http.createServer(app).listen(port, function (err) {
-  console.log('listening in http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:' + port);
+  console.log('listening in http://ec2-54-149-166-225.us-west-2.compute.amazonaws.com:' + port);
 });
