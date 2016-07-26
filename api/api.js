@@ -196,9 +196,10 @@ app.get('/secured/commonPhrases', function(req, res) {
 	
 	var NGrams = natural.NGrams;
 	var counts = new Object();
+	var maxLen = Math.min(essayText.split(" ").length,10);
 	
 	//Compute N-Grams from unit size 3 to unit size 6.
-	for (var ngram_length = 3;ngram_length < 6;ngram_length +=1){
+	for (var ngram_length = 3;ngram_length < maxLen;ngram_length +=1){
 		var blocks = NGrams.ngrams(essayText, ngram_length);
 		
 		for (var i = 0;i<blocks.length;i++){
@@ -216,7 +217,7 @@ app.get('/secured/commonPhrases', function(req, res) {
 	
 	//Find top 5 N-Grams
 	var mostCommon = [];
-	for (var i =0;i<5;i++){
+	for (var i =0;i<10;i++){
 		//Get largest
 		var bestWord = '';
 		var bestFreq = 0;
@@ -233,7 +234,10 @@ app.get('/secured/commonPhrases', function(req, res) {
 		}
 		
 		//Push to our most common list
-		mostCommon.push('"' + bestWord + "'" + " occurs " + bestFreq + " time(s)");
+		if (bestFreq > 0){
+			mostCommon.push('"' + bestWord + '"' + " occurs " + bestFreq + " time(s)");
+			console.log(bestFreq);
+		}
 		
 		//Remove from future choices (so it doesn't get chosen again)
 		counts[bestWord] = 0;

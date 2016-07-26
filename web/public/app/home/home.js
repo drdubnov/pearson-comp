@@ -589,6 +589,10 @@ function processEssay() {
 	//Compute the rank of each word
 	rankOfWords = new Object();
 	
+	//Compute the average rank
+	averageFreq = 0;
+	count = 0;
+	
 	for (var i =0;i<words.length;i++){
 		current = words[i].trim().toLowerCase();
 		
@@ -601,11 +605,12 @@ function processEssay() {
 			//Let's start with computing the average rank.
 			window.swag = current
 			rankOfWords[current] = grabWordInfo
+			
+			averageFreq +=parseInt(rankOfWords[current][3]);
+			count +=1;
 		}
 	}
 	
-	//Compute the average rank
-	averageFreq = 0;
 	
 	//Compute the probabilities for each subject (using Naive Bayes Assumption)
 	//More specifically, the Multi-variate Bernoulli event model.
@@ -617,11 +622,8 @@ function processEssay() {
 	subjectProbabilities['academic'] = 0;
 	
 	
-	count = 0;
 	for (var key in rankOfWords) {
 		if (rankOfWords.hasOwnProperty(key)){
-			averageFreq +=parseInt(rankOfWords[key][3])
-			
 			totalFreq = parseFloat(rankOfWords[key][3]);
 			
 			//Compute the log likelihood instead (better precision)!
@@ -630,7 +632,6 @@ function processEssay() {
 			subjectProbabilities['magazine'] += Math.log10(parseFloat(rankOfWords[key][6])/totalFreq);
 			subjectProbabilities['newspaper'] += Math.log10(parseFloat(rankOfWords[key][7])/totalFreq);
 			subjectProbabilities['academic'] += Math.log10(parseFloat(rankOfWords[key][8])/totalFreq);
-			count +=1;
 		}
 	}
 	
