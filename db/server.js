@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 
 var dbName = 'Pearson';
 
-mongoose.connect('mongodb://ec2-52-27-56-16.us-west-2.compute.amazonaws.com/' + dbName);
+mongoose.connect('mongodb://ec2-54-149-166-225.us-west-2.compute.amazonaws.com/' + dbName);
 
 app.use(session({ 
 	secret: 'inTunity',

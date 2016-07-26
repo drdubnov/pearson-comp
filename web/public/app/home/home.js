@@ -36,7 +36,7 @@ angular.module( 'Pearson.home', [
 
 
   $http({
-	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/account/id/essay',
+	  url: 'http://ec2-54-149-166-225.us-west-2.compute.amazonaws.com:3001/secured/account/id/essay',
 	  method: 'GET',
 	  params: {
 		user_id: auth.profile["identities"][0]["user_id"]
@@ -142,7 +142,7 @@ angular.module( 'Pearson.home', [
 
 
 				  $http({
-					  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkArticleFree',
+					  url: 'http://ec2-54-149-166-225.us-west-2.compute.amazonaws.com:3001/secured/checkArticleFree',
 					  method: 'GET',
 					  params: {
 						url_to_check: url
@@ -218,7 +218,7 @@ angular.module( 'Pearson.home', [
 	  //Remove all punctuation
 	 word = word.match(/[^_\W]+/g).join(' ');
   	 $http({
-	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkDefinition',
+	  url: 'http://ec2-54-149-166-225.us-west-2.compute.amazonaws.com:3001/secured/checkDefinition',
 	  method: 'GET',
 	  params: {
 		word_to_check: word
@@ -355,7 +355,7 @@ angular.module( 'Pearson.home', [
 	var result = "EMPTY";
 
 	$http({
-	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/checkArticleFree',
+	  url: 'http://ec2-54-149-166-225.us-west-2.compute.amazonaws.com:3001/secured/checkArticleFree',
 	  method: 'GET',
 	  params: {
 		url_to_check: pearson_article_url
@@ -516,7 +516,7 @@ function topFiveNGrams(){
 	document.getElementById("pbar").style.visibility = "visible";
 	
 	$http({
-	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/commonPhrases',
+	  url: 'http://ec2-54-149-166-225.us-west-2.compute.amazonaws.com:3001/secured/commonPhrases',
 	  method: 'GET',
 	  params: {
 		essay: document.getElementById("typearea").value
@@ -700,7 +700,7 @@ window.processEssay = processEssay;
 
 $scope.searchInfo = function(){
 	$http({
-	  url: 'http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/searchFTArticles',
+	  url: 'http://ec2-54-149-166-225.us-west-2.compute.amazonaws.com:3001/secured/searchFTArticles',
 	  method: 'GET',
 	  params: {
 		search: document.getElementById("search").value
@@ -946,7 +946,7 @@ $scope.saveEssay = function() {
 
 
 
-	$http.post('http://ec2-52-27-56-16.us-west-2.compute.amazonaws.com:3001/secured/account/id/essay', {data: essayinfo}, { 
+	$http.post('http://ec2-54-149-166-225.us-west-2.compute.amazonaws.com:3001/secured/account/id/essay', {data: essayinfo}, { 
 	    headers: {
 	    'Accept' : '*/*',
 	    'Content-Type': 'application/json'
